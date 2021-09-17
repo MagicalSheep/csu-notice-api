@@ -3,7 +3,6 @@ package cn.magicalsheep.csunoticeapi;
 import cn.magicalsheep.csunoticeapi.http.Connector;
 import cn.magicalsheep.csunoticeapi.model.Configuration;
 import cn.magicalsheep.csunoticeapi.store.IOHandler;
-import cn.magicalsheep.csunoticeapi.store.Repository;
 
 import java.net.CookieManager;
 import java.net.http.HttpClient;
@@ -11,10 +10,10 @@ import java.time.Duration;
 
 public class Factory {
 
+    private static boolean firstRun = false;
     private static Configuration configuration;
     private static HttpClient httpClient;
     private static final Connector connector = new Connector();
-    private static final Repository repository = new Repository();
 
     static {
         try {
@@ -29,8 +28,12 @@ public class Factory {
         }
     }
 
-    public static Repository getRepository() {
-        return repository;
+    public static boolean isFirstRun() {
+        return firstRun;
+    }
+
+    public static void setFirstRun(boolean firstRun) {
+        Factory.firstRun = firstRun;
     }
 
     public static HttpClient getHttpClient() {

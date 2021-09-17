@@ -1,6 +1,8 @@
 package cn.magicalsheep.csunoticeapi.http;
 
 import cn.magicalsheep.csunoticeapi.Factory;
+import cn.magicalsheep.csunoticeapi.exception.LoginException;
+import cn.magicalsheep.csunoticeapi.exception.PageEmptyException;
 import cn.magicalsheep.csunoticeapi.model.packet.LoginPacket;
 import cn.magicalsheep.csunoticeapi.model.Notice;
 import cn.magicalsheep.csunoticeapi.model.packet.Packet;
@@ -56,9 +58,9 @@ public class Connector {
         ArrayList<Notice> notices = DOMHandler.translate(html);
         if (notices.isEmpty()) {
             if (!login(Factory.getConfiguration().getUser(), Factory.getConfiguration().getPwd()))
-                throw new Exception("Internal server error");
+                throw new LoginException("Login Exception: Internal server error");
             notices = DOMHandler.translate(get(getURI(uri)).body());
-            if (notices.isEmpty()) throw new Exception("Page " + pageNum + " is empty");
+            if (notices.isEmpty()) throw new PageEmptyException("Page " + pageNum + " is empty");
         }
         return notices;
     }

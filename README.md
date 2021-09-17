@@ -1,6 +1,8 @@
 # csu-notice-api
 
-**开发中**
+![version](https://img.shields.io/badge/version-0.2.0--SNAPSHOT-blue)
+
+**开发中，响应格式不稳定**
 
 解析学院及校内通知的原始HTML文本，将其封装成为API，供外部应用调用。此仓库不提供在线服务，启用API以获取校内通知需自行部署程序，并配置个人信息门户账号。
 
@@ -50,10 +52,14 @@
 {
   "user": "exampleUser",
   "pwd": "examplePassword",
-  "root_uri": "http://tz.its.csu.edu.cn"
+  "root_uri": "http://tz.its.csu.edu.cn",
+  "update_num_per_pages": 0,
+  "init_db": false
 }
 ```
 
 - `user`: 信息门户学工号
 - `pwd`: 信息门户密码
 - `root_uri`: 通知网站根目录，后续版本可能产生变动，以适应学院通知
+- `update_num_per_pages`: 每次更新时，从网站上爬取通知的页数（启动时将进行一次更新）
+- `init_db`: 是否在启动时更新整个数据库（爬取所有通知）

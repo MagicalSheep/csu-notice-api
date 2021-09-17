@@ -1,5 +1,6 @@
 package cn.magicalsheep.csunoticeapi.store;
 
+import cn.magicalsheep.csunoticeapi.Factory;
 import cn.magicalsheep.csunoticeapi.model.Configuration;
 import com.google.gson.Gson;
 
@@ -12,6 +13,7 @@ public class IOHandler {
 
     public static Configuration loadConf() throws IOException {
         if (!file.exists()) {
+            Factory.setFirstRun(true);
             Configuration configuration = initConf();
             saveConf(configuration);
             return configuration;

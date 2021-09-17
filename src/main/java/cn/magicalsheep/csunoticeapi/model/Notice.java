@@ -1,7 +1,12 @@
 package cn.magicalsheep.csunoticeapi.model;
 
+import javax.persistence.*;
+
+@Entity
 public class Notice {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String title;
     private String from;
