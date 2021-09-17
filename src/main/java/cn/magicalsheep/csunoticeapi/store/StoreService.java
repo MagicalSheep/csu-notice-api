@@ -38,6 +38,7 @@ public class StoreService {
     }
 
     public void update(int updatePageNum) throws Exception {
+        logger.info("Start updating notices");
         ArrayList<Notice> result = new ArrayList<>();
         int pageNum = 1;
         try {
@@ -55,6 +56,7 @@ public class StoreService {
         }
         noticeRepository.flush();
         HEAD = getLatestNotice().getId();
+        logger.info("Update notices completed");
         logger.info("Current head pointer is " + HEAD);
     }
 
