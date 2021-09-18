@@ -41,7 +41,11 @@ public class DOMHandler {
             Notice notice = new CSENotice(); // IMPORTANT
             notice.setTitle(x.html());
             notice.setFrom("计算机学院");
-            notice.setUri(x.attr("href").replace("..", "https://cse.csu.edu.cn"));
+            String url = x.attr("href");
+            if (url.startsWith("../info"))
+                notice.setUri(url.replace("..", "https://cse.csu.edu.cn"));
+            else
+                notice.setUri(url.replace("../..", "https://cse.csu.edu.cn"));
             ret.add(notice);
         }
         return ret;
