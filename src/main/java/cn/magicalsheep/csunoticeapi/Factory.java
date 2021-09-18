@@ -1,7 +1,10 @@
 package cn.magicalsheep.csunoticeapi;
 
-import cn.magicalsheep.csunoticeapi.http.Connector;
+import cn.magicalsheep.csunoticeapi.http.connector.Connector;
+import cn.magicalsheep.csunoticeapi.http.connector.CseConnector;
+import cn.magicalsheep.csunoticeapi.http.connector.SchoolConnector;
 import cn.magicalsheep.csunoticeapi.model.Configuration;
+import cn.magicalsheep.csunoticeapi.model.Page;
 import cn.magicalsheep.csunoticeapi.store.IOHandler;
 
 import java.net.CookieManager;
@@ -13,7 +16,11 @@ public class Factory {
     private static boolean firstRun = false;
     private static Configuration configuration;
     private static HttpClient httpClient;
-    private static final Connector connector = new Connector();
+
+    // connector begin
+    private static final SchoolConnector schoolConnector = new SchoolConnector();
+    private static final CseConnector cseConnector = new CseConnector();
+    // connector end
 
     static {
         try {
@@ -44,7 +51,12 @@ public class Factory {
         return configuration;
     }
 
-    public static Connector getConnector() {
-        return connector;
+    public static Connector getConnector(Page.TYPE type) throws NullPointerException {
+        if (type == Page.TYPE.SCHOOL) {
+            return schoolConnector;
+        } else if (type == Page.TYPE.CSE) {
+            return cseConnector;
+        }
+        throw new NullPointerException("Invalid connector type: Internal server error");
     }
 }

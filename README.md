@@ -1,6 +1,6 @@
 # csu-notice-api
 
-![version](https://img.shields.io/badge/version-0.2.0--SNAPSHOT-blue)
+![version](https://img.shields.io/badge/version-0.2.1--SNAPSHOT-blue)
 
 **开发中，响应格式不稳定**
 

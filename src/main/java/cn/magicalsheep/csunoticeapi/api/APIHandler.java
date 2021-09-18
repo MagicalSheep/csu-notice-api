@@ -1,6 +1,7 @@
 package cn.magicalsheep.csunoticeapi.api;
 
 import cn.magicalsheep.csunoticeapi.Factory;
+import cn.magicalsheep.csunoticeapi.model.Page;
 import cn.magicalsheep.csunoticeapi.model.response.NoticeResponse;
 import cn.magicalsheep.csunoticeapi.model.response.NoticesResponse;
 import cn.magicalsheep.csunoticeapi.model.response.Response;
@@ -39,7 +40,7 @@ public class APIHandler {
     @PostMapping("/main/page")
     public NoticesResponse getNotices(@RequestParam int num) {
         try {
-            return new NoticesResponse(storeService.getNotices(num));
+            return new NoticesResponse(storeService.getNotices(Page.TYPE.SCHOOL, num));
         } catch (Exception e) {
             NoticesResponse ret = new NoticesResponse(null);
             ret.setStatus(0);
@@ -50,13 +51,13 @@ public class APIHandler {
 
     @GetMapping("/main/head")
     public Response getHead() {
-        return new Response(storeService.getHEAD());
+        return new Response(storeService.getHEAD(Page.TYPE.SCHOOL));
     }
 
     @PostMapping("/main")
     public NoticesResponse getDeltaNotices(@RequestParam int head) {
         try {
-            return new NoticesResponse(storeService.getDeltaNotices(head));
+            return new NoticesResponse(storeService.getDeltaNotices(Page.TYPE.SCHOOL, head));
         } catch (Exception e) {
             NoticesResponse noticesResponse = new NoticesResponse(null);
             noticesResponse.setStatus(0);
@@ -68,7 +69,7 @@ public class APIHandler {
     @PostMapping("/main/notice")
     public NoticeResponse getNotice(@RequestParam int id) {
         try {
-            return new NoticeResponse(storeService.getNoticeById(id));
+            return new NoticeResponse(storeService.getNoticeById(Page.TYPE.SCHOOL, id));
         } catch (Exception e) {
             NoticeResponse noticeResponse = new NoticeResponse(null);
             noticeResponse.setStatus(0);
@@ -80,7 +81,7 @@ public class APIHandler {
     @GetMapping("/main/latest")
     public NoticeResponse getLatestNotice() {
         try {
-            return new NoticeResponse(storeService.getLatestNotice());
+            return new NoticeResponse(storeService.getLatestNotice(Page.TYPE.SCHOOL));
         } catch (Exception e) {
             NoticeResponse noticeResponse = new NoticeResponse(null);
             noticeResponse.setStatus(0);

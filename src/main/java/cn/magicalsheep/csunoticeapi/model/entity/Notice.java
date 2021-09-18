@@ -1,8 +1,8 @@
-package cn.magicalsheep.csunoticeapi.model;
+package cn.magicalsheep.csunoticeapi.model.entity;
 
 import javax.persistence.*;
 
-@Entity
+@MappedSuperclass
 public class Notice {
 
     @Id
@@ -12,6 +12,17 @@ public class Notice {
     private String from;
     private String uri;
     private String content;
+
+    public Notice() {
+    }
+
+    public Notice(int id, String title, String from, String uri, String content) {
+        this.id = id;
+        this.title = title;
+        this.from = from;
+        this.uri = uri;
+        this.content = content;
+    }
 
     public int getId() {
         return id;

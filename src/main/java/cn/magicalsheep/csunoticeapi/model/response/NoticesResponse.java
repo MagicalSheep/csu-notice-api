@@ -1,6 +1,6 @@
 package cn.magicalsheep.csunoticeapi.model.response;
 
-import cn.magicalsheep.csunoticeapi.model.Notice;
+import cn.magicalsheep.csunoticeapi.model.entity.Notice;
 
 import java.util.ArrayList;
 

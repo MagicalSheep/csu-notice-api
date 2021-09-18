@@ -7,6 +7,16 @@ public class Configuration {
     private String root_uri;
     private int update_num_per_pages;
     private boolean init_db = false;
+    private boolean school = true;
+    private boolean cse = false;
+
+    public boolean isCse() {
+        return cse;
+    }
+
+    public boolean isSchool() {
+        return school;
+    }
 
     public int getUpdate_num_per_pages() {
         return update_num_per_pages;
@@ -26,6 +36,14 @@ public class Configuration {
 
     public String getRoot_uri() {
         return root_uri;
+    }
+
+    public void setCse(boolean cse) {
+        this.cse = cse;
+    }
+
+    public void setSchool(boolean school) {
+        this.school = school;
     }
 
     public void setInit_db(boolean init_db) {
