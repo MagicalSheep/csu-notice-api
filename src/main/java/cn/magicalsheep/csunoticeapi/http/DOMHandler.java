@@ -2,6 +2,7 @@ package cn.magicalsheep.csunoticeapi.http;
 
 import cn.magicalsheep.csunoticeapi.Factory;
 import cn.magicalsheep.csunoticeapi.model.Page;
+import cn.magicalsheep.csunoticeapi.model.entity.CSENotice;
 import cn.magicalsheep.csunoticeapi.model.entity.Notice;
 import cn.magicalsheep.csunoticeapi.model.entity.SchoolNotice;
 import org.jsoup.Jsoup;
@@ -32,9 +33,30 @@ public class DOMHandler {
         return ret;
     }
 
-    private static ArrayList<Notice> handle_cse(String html) throws Exception {
-        // TODO: translate cse html
-        return null;
+    private static ArrayList<Notice> handle_cse(String html) {
+        ArrayList<Notice> ret = new ArrayList<>();
+        Document document = Jsoup.parse(html);
+        Elements elements = document.select("a[href^=../info], a[href^=../../info]");
+        for (Element x : elements) {
+            Notice notice = new CSENotice(); // IMPORTANT
+            notice.setTitle(x.html());
+            notice.setFrom("计算机学院");
+            notice.setUri(x.attr("href").replace("..", "https://cse.csu.edu.cn"));
+            ret.add(notice);
+        }
+        return ret;
+    }
+
+    public static int getPageNum(Page page) throws NullPointerException {
+        if (page.getType() == Page.TYPE.CSE) {
+            Document document = Jsoup.parse(page.getContent());
+            Element element = document.select("TD[id=\"fanye235272\"]").get(0);
+            String str = element.html();
+            String res = str.substring(str.substring(0, str.indexOf("/")).length() + 1);
+            res = res.replace("&nbsp;", "");
+            return Integer.parseInt(res);
+        }
+        throw new NullPointerException("Invalid page type: Internal server error");
     }
 
     public static ArrayList<Notice> translate(Page page) throws Exception {

@@ -38,6 +38,7 @@ public class IOHandler {
             configuration.setUser("exampleUser");
             configuration.setPwd("examplePassword");
             configuration.setRoot_uri("http://tz.its.csu.edu.cn");
+            configuration.setCse_uri("https://cse.csu.edu.cn/index/tzgg.htm");
             return configuration;
         } else {
             throw new IOException("Create file failed");

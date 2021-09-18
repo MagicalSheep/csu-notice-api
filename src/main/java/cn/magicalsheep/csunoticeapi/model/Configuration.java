@@ -4,7 +4,10 @@ public class Configuration {
 
     private String user;
     private String pwd;
+
     private String root_uri;
+    private String cse_uri;
+
     private int update_num_per_pages;
     private boolean init_db = false;
     private boolean school = true;
@@ -32,6 +35,10 @@ public class Configuration {
 
     public String getPwd() {
         return pwd;
+    }
+
+    public String getCse_uri() {
+        return cse_uri;
     }
 
     public String getRoot_uri() {
@@ -64,5 +71,9 @@ public class Configuration {
 
     public void setRoot_uri(String root_uri) {
         this.root_uri = root_uri;
+    }
+
+    public void setCse_uri(String cse_uri) {
+        this.cse_uri = cse_uri;
     }
 }

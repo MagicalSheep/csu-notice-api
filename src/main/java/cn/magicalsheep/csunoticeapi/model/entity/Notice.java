@@ -6,7 +6,7 @@ import javax.persistence.*;
 public class Notice {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String title;
     private String from;

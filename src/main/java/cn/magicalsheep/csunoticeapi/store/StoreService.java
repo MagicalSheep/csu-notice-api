@@ -63,7 +63,7 @@ public class StoreService {
         try {
             for (int pageNum = 1; pageNum <= updatePageNum; pageNum++) {
                 logger.info("Updating page " + pageNum + " (Type: " + type + ")");
-                result.addAll(connector.getNotices(pageNum++));
+                result.addAll(connector.getNotices(pageNum));
             }
         } catch (PageEmptyException ignored) {
         }

@@ -23,6 +23,7 @@ public class SchoolConnector extends Connector {
         return true;
     }
 
+    @Override
     public ArrayList<Notice> getNotices(int pageNum) throws Exception {
         if (pageNum <= 0) throw new Exception("Invalid page num");
         String uri = Factory.getConfiguration().getRoot_uri();

@@ -1,6 +1,6 @@
 # csu-notice-api
 
-![version](https://img.shields.io/badge/version-0.2.1--SNAPSHOT-blue)
+![version](https://img.shields.io/badge/version-0.3.0--SNAPSHOT-blue)
 
 **开发中，响应格式不稳定**
 
@@ -8,11 +8,19 @@
 
 ## API
 
+### 校内通知
 - `../main/page`，`POST`，参数: `num`，获取第 `num` 页的所有通知。
 - `../main/head`，`GET`，获取通知列表头指针。
 - `../main`，`POST`，参数: `head`，获取指针`head`与通知列表头指针之间的所有通知。
 - `../main/notice`，`POST`，参数: `id`，获取值为`id`的指针所指向的通知内容。
 - `../main/latest`，`GET`，获取最新的一条通知。
+
+### 计算机院通知
+- `../cse/page`，`POST`，参数: `num`，获取第 `num` 页的所有通知。
+- `../cse/head`，`GET`，获取通知列表头指针。
+- `../cse`，`POST`，参数: `head`，获取指针`head`与通知列表头指针之间的所有通知。
+- `../cse/notice`，`POST`，参数: `id`，获取值为`id`的指针所指向的通知内容。
+- `../cse/latest`，`GET`，获取最新的一条通知。
 
 ## 响应格式
 
@@ -53,13 +61,19 @@
   "user": "exampleUser",
   "pwd": "examplePassword",
   "root_uri": "http://tz.its.csu.edu.cn",
-  "update_num_per_pages": 0,
-  "init_db": false
+  "cse_uri": "https://cse.csu.edu.cn/index/tzgg.htm",
+  "update_num_per_pages": 5,
+  "init_db": false,
+  "school": true,
+  "cse": false
 }
 ```
 
 - `user`: 信息门户学工号
 - `pwd`: 信息门户密码
-- `root_uri`: 通知网站根目录，后续版本可能产生变动，以适应学院通知
+- `root_uri`: 校内通知官网地址
+- `cse_uri`: 计算机学院官网地址
 - `update_num_per_pages`: 每次更新时，从网站上爬取通知的页数（启动时将进行一次更新）
 - `init_db`: 是否在启动时更新整个数据库（爬取所有通知）
+- `scholl`: 更新时是否爬取校内通知
+- `cse`: 更新时是否爬取计算机学院通知

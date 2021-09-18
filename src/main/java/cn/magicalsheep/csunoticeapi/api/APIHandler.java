@@ -90,4 +90,57 @@ public class APIHandler {
         }
     }
 
+    @PostMapping("/cse/page")
+    public NoticesResponse getCSENotices(@RequestParam int num) {
+        try {
+            return new NoticesResponse(storeService.getNotices(Page.TYPE.CSE, num));
+        } catch (Exception e) {
+            NoticesResponse ret = new NoticesResponse(null);
+            ret.setStatus(0);
+            ret.setMsg(e.getMessage());
+            return ret;
+        }
+    }
+
+    @GetMapping("/cse/head")
+    public Response getCSEHead() {
+        return new Response(storeService.getHEAD(Page.TYPE.CSE));
+    }
+
+    @PostMapping("/cse")
+    public NoticesResponse getCSEDeltaNotices(@RequestParam int head) {
+        try {
+            return new NoticesResponse(storeService.getDeltaNotices(Page.TYPE.CSE, head));
+        } catch (Exception e) {
+            NoticesResponse noticesResponse = new NoticesResponse(null);
+            noticesResponse.setStatus(0);
+            noticesResponse.setMsg(e.getMessage());
+            return noticesResponse;
+        }
+    }
+
+    @PostMapping("/cse/notice")
+    public NoticeResponse getCSENotice(@RequestParam int id) {
+        try {
+            return new NoticeResponse(storeService.getNoticeById(Page.TYPE.CSE, id));
+        } catch (Exception e) {
+            NoticeResponse noticeResponse = new NoticeResponse(null);
+            noticeResponse.setStatus(0);
+            noticeResponse.setMsg(e.getMessage());
+            return noticeResponse;
+        }
+    }
+
+    @GetMapping("/cse/latest")
+    public NoticeResponse getCSELatestNotice() {
+        try {
+            return new NoticeResponse(storeService.getLatestNotice(Page.TYPE.CSE));
+        } catch (Exception e) {
+            NoticeResponse noticeResponse = new NoticeResponse(null);
+            noticeResponse.setStatus(0);
+            noticeResponse.setMsg(e.getMessage());
+            return noticeResponse;
+        }
+    }
+
 }
