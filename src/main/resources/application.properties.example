@@ -6,3 +6,7 @@ spring.jpa.properties.hibernate.globally_quoted_identifiers=true
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 spring.jpa.database=mysql
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+
+server.ssl.key-store=classpath:keystore.pfx
+server.ssl.key-store-password=
+server.ssl.key-store-type=PKCS12

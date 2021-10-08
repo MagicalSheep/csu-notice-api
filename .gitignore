@@ -33,3 +33,5 @@ build/
 .vscode/
 
 settings.json
+*.pfx
+src/main/resources/application.properties
