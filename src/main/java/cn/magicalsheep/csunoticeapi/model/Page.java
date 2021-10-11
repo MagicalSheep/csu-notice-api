@@ -1,15 +1,13 @@
 package cn.magicalsheep.csunoticeapi.model;
 
+import cn.magicalsheep.csunoticeapi.model.constant.NoticeType;
+
 public class Page {
 
     private String content;
-    private TYPE type;
+    private NoticeType type;
 
-    public enum TYPE {
-        SCHOOL, CSE
-    }
-
-    public Page(TYPE type, String content) {
+    public Page(NoticeType type, String content) {
         this.type = type;
         this.content = content;
     }
@@ -18,7 +16,7 @@ public class Page {
         return content;
     }
 
-    public TYPE getType() {
+    public NoticeType getType() {
         return type;
     }
 
@@ -26,7 +24,7 @@ public class Page {
         this.content = content;
     }
 
-    public void setType(TYPE type) {
+    public void setType(NoticeType type) {
         this.type = type;
     }
 

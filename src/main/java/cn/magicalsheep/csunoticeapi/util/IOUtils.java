@@ -1,4 +1,4 @@
-package cn.magicalsheep.csunoticeapi.store;
+package cn.magicalsheep.csunoticeapi.util;
 
 import cn.magicalsheep.csunoticeapi.Factory;
 import cn.magicalsheep.csunoticeapi.model.Configuration;
@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 
 import java.io.*;
 
-public class IOHandler {
+public class IOUtils {
 
     private static final File file = new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "settings.json");
     private static final Gson gson = new Gson();
