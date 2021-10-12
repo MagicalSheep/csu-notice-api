@@ -1,6 +1,6 @@
 # csu-notice-api
 
-![version](https://img.shields.io/badge/version-0.3.0--SNAPSHOT-blue)
+![version](https://img.shields.io/badge/version-0.4.0--SNAPSHOT-blue)
 
 **开发中，响应格式不稳定**
 
@@ -9,18 +9,22 @@
 ## API
 
 ### 校内通知
+
 - `../main/page`，`POST`，参数: `num`，获取第 `num` 页的所有通知。
 - `../main/head`，`GET`，获取通知列表头指针。
 - `../main`，`POST`，参数: `head`，获取指针`head`与通知列表头指针之间的所有通知。
 - `../main/notice`，`POST`，参数: `id`，获取值为`id`的指针所指向的通知内容。
 - `../main/latest`，`GET`，获取最新的一条通知。
+- `../main/query`，`POST`，参数：`title`，获取标题含有`title`字符串的所有通知。
 
 ### 计算机院通知
+
 - `../cse/page`，`POST`，参数: `num`，获取第 `num` 页的所有通知。
 - `../cse/head`，`GET`，获取通知列表头指针。
 - `../cse`，`POST`，参数: `head`，获取指针`head`与通知列表头指针之间的所有通知。
 - `../cse/notice`，`POST`，参数: `id`，获取值为`id`的指针所指向的通知内容。
 - `../cse/latest`，`GET`，获取最新的一条通知。
+- `../cse/query`，`POST`，参数：`title`，获取标题含有`title`字符串的所有通知。
 
 ## 响应格式
 
@@ -30,9 +34,8 @@
 
 ```json
 {
-  "status": 1,
   "msg": "ok",
-  "notices": [
+  "data": [
     {
       "id": 1,
       "title": "中南大学关于做好2021年下半年全国大学英语四、六级考试报名工作的通知",
@@ -48,7 +51,8 @@
       "content": null
     }
   ],
-  "version": 1
+  "version": 2,
+  "status": 200
 }
 ```
 
