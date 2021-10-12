@@ -1,23 +1,28 @@
-package cn.magicalsheep.csunoticeapi.handler.http;
+package cn.magicalsheep.csunoticeapi.service.impl.http;
 
 import cn.magicalsheep.csunoticeapi.Factory;
 import cn.magicalsheep.csunoticeapi.exception.PageEmptyException;
-import cn.magicalsheep.csunoticeapi.handler.HttpHandler;
 import cn.magicalsheep.csunoticeapi.model.Page;
 import cn.magicalsheep.csunoticeapi.model.constant.NoticeType;
 import cn.magicalsheep.csunoticeapi.model.entity.CSENotice;
 import cn.magicalsheep.csunoticeapi.model.entity.Notice;
+import cn.magicalsheep.csunoticeapi.service.ImageService;
+import cn.magicalsheep.csunoticeapi.service.StoreService;
 import cn.magicalsheep.csunoticeapi.util.HttpUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
-public class CSEHttpHandler extends HttpHandler {
+@Service
+public class CSEHttpService extends BaseHttpService {
 
-    private static final NoticeType type = NoticeType.CSE;
+    public CSEHttpService(ImageService imageService, StoreService storeService) {
+        super(storeService, imageService, NoticeType.CSE);
+    }
 
     private int getPageNum(Page page) {
         Document document = Jsoup.parse(page.getContent());
@@ -29,7 +34,7 @@ public class CSEHttpHandler extends HttpHandler {
     }
 
     @Override
-    protected ArrayList<Notice> parse(Page page) {
+    public ArrayList<Notice> parse(Page page) {
         String html = page.getContent();
         ArrayList<Notice> ret = new ArrayList<>();
         Document document = Jsoup.parse(html);
@@ -49,14 +54,14 @@ public class CSEHttpHandler extends HttpHandler {
     }
 
     @Override
-    public ArrayList<Notice> getNotices(int pageNum) throws Exception {
+    protected ArrayList<Notice> getNotices(int pageNum) throws Exception {
         if (pageNum <= 0) throw new Exception("Invalid page num");
         String uri = Factory.getConfiguration().getCse_uri();
-        Page page = new Page(type, get(HttpUtils.getURI(uri)).body());
+        Page page = new Page(type, HttpUtils.get(HttpUtils.getURI(uri)).body());
         int totPage = getPageNum(page);
         if (pageNum > 1) {
             uri = uri.replace(".htm", "/" + (totPage - pageNum + 1) + ".htm");
-            page = new Page(type, get(HttpUtils.getURI(uri)).body());
+            page = new Page(type, HttpUtils.get(HttpUtils.getURI(uri)).body());
         }
         ArrayList<Notice> notices = parse(page);
         if (notices.isEmpty())

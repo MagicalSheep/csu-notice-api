@@ -4,6 +4,7 @@ import cn.magicalsheep.csunoticeapi.model.constant.NoticeType;
 import cn.magicalsheep.csunoticeapi.model.entity.Notice;
 import cn.magicalsheep.csunoticeapi.model.response.AjaxResult;
 import cn.magicalsheep.csunoticeapi.service.StoreService;
+import cn.magicalsheep.csunoticeapi.service.impl.http.SchoolHttpService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ public class SchoolNoticeController {
 
     private static final Logger logger = LoggerFactory.getLogger(SchoolNoticeController.class);
     private final StoreService storeService;
+    private final SchoolHttpService schoolHttpService;
     private static final NoticeType type = NoticeType.SCHOOL;
 
     @PostMapping("/page")
@@ -33,7 +35,7 @@ public class SchoolNoticeController {
 
     @GetMapping("/head")
     public AjaxResult getHead() {
-        return AjaxResult.success(storeService.getHEAD(type));
+        return AjaxResult.success(schoolHttpService.getHEAD());
     }
 
     @PostMapping

@@ -17,6 +17,8 @@ public interface SchoolNoticeRepository extends JpaRepository<SchoolNotice, Inte
 
     Optional<Notice> findFirstByOrderByIdDesc();
 
-    Optional<Notice> findNoticeByUri(String uri);
+    Boolean existsByUri(String uri);
+
+    Boolean existsByUriAndContentIsNull(String uri);
 
 }

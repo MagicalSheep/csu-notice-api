@@ -17,6 +17,7 @@ public interface CseNoticeRepository extends JpaRepository<CSENotice, Integer> {
 
     Optional<Notice> findFirstByOrderByIdDesc();
 
-    Optional<Notice> findNoticeByUri(String uri);
+    Boolean existsByUri(String uri);
 
+    Boolean existsByUriAndContentIsNull(String uri);
 }

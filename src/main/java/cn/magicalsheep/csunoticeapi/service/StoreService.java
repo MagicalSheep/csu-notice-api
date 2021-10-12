@@ -7,11 +7,9 @@ import java.util.ArrayList;
 
 public interface StoreService {
 
-    int getHEAD(NoticeType type);
+    boolean isNeedToGetContent(NoticeType type, Notice notice);
 
-    void updateAll() throws Exception;
-
-    void update(int updatePageNum);
+    int save(ArrayList<Notice> notices, NoticeType type);
 
     Notice getNoticeById(NoticeType type, int id);
 
