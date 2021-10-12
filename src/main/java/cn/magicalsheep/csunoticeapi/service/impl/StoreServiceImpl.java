@@ -109,4 +109,13 @@ public class StoreServiceImpl implements StoreService {
             return null;
     }
 
+    @Override
+    public ArrayList<Notice> getNoticeByTitle(NoticeType type, String title) {
+        if (type == NoticeType.SCHOOL)
+            return new ArrayList<>(schoolNoticeRepository.findAllByTitleContains(title));
+        else if (type == NoticeType.CSE)
+            return new ArrayList<>(cseNoticeRepository.findAllByTitleContains(title));
+        else
+            return null;
+    }
 }

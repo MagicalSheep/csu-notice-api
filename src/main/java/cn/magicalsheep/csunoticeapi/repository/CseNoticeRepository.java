@@ -20,4 +20,6 @@ public interface CseNoticeRepository extends JpaRepository<CSENotice, Integer> {
     Boolean existsByUri(String uri);
 
     Boolean existsByUriAndContentIsNull(String uri);
+
+    List<Notice> findAllByTitleContains(String title);
 }

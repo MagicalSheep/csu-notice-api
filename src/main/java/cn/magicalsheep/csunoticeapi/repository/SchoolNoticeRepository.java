@@ -21,4 +21,6 @@ public interface SchoolNoticeRepository extends JpaRepository<SchoolNotice, Inte
 
     Boolean existsByUriAndContentIsNull(String uri);
 
+    List<Notice> findAllByTitleContains(String title);
+
 }

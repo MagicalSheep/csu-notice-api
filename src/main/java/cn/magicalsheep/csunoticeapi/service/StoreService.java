@@ -19,4 +19,5 @@ public interface StoreService {
 
     ArrayList<Notice> getDeltaNotices(NoticeType type, int head);
 
+    ArrayList<Notice> getNoticeByTitle(NoticeType type, String title);
 }

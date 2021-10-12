@@ -70,4 +70,9 @@ public class CSENoticeController {
             return AjaxResult.error(e.getMessage());
         }
     }
+
+    @PostMapping("/query")
+    public AjaxResult getNoticeByTitle(@RequestParam String title) {
+        return AjaxResult.success(storeService.getNoticeByTitle(type, title));
+    }
 }

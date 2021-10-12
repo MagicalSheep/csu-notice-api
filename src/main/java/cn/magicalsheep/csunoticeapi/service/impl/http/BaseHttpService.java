@@ -42,18 +42,18 @@ public abstract class BaseHttpService implements HttpService {
             }
         } catch (PageEmptyException ignored) {
         }
-        int i = 0, count = 0;
-        logger.info("Updating notice content, please waiting...(Type: " + type + ")");
-        for (Notice notice : result) {
-            ++i;
-            logger.info("Updating notice " + i + " content (Type: " + type + ")");
-            if (storeService.isNeedToGetContent(type, notice)) {
-                ++count;
-                notice.setContent(imageService.toBase64Image(
-                        HttpUtils.get(HttpUtils.getURI(notice.getUri())).body()));
-            }
-        }
-        logger.info("Updated " + count + " notices content (Type: " + type + ")");
+//        int i = 0, count = 0;
+//        logger.info("Updating notice content, please waiting...(Type: " + type + ")");
+//        for (Notice notice : result) {
+//            ++i;
+//            logger.info("Updating notice " + i + " content (Type: " + type + ")");
+//            if (storeService.isNeedToGetContent(type, notice)) {
+//                ++count;
+//                notice.setContent(imageService.toBase64Image(
+//                        HttpUtils.get(HttpUtils.getURI(notice.getUri())).body()));
+//            }
+//        }
+//        logger.info("Updated " + count + " notices content (Type: " + type + ")");
         HEAD = storeService.save(result, type);
     }
 
