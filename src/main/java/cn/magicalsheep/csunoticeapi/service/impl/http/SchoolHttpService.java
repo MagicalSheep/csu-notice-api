@@ -8,7 +8,6 @@ import cn.magicalsheep.csunoticeapi.model.constant.NoticeType;
 import cn.magicalsheep.csunoticeapi.model.entity.Notice;
 import cn.magicalsheep.csunoticeapi.model.entity.SchoolNotice;
 import cn.magicalsheep.csunoticeapi.model.packet.LoginPacket;
-import cn.magicalsheep.csunoticeapi.service.ImageService;
 import cn.magicalsheep.csunoticeapi.service.StoreService;
 import cn.magicalsheep.csunoticeapi.util.HttpUtils;
 import org.jsoup.Jsoup;
@@ -24,8 +23,14 @@ import java.util.regex.Pattern;
 @Service
 public class SchoolHttpService extends BaseHttpService {
 
-    public SchoolHttpService(StoreService storeService, ImageService imageService) {
-        super(storeService, imageService, NoticeType.SCHOOL);
+    public SchoolHttpService(StoreService storeService) {
+        super(storeService, NoticeType.SCHOOL);
+    }
+
+    private boolean loginByBrowser(String user, String pwd) {
+        LoginPacket loginPacket = new LoginPacket(user, pwd);
+        String html = HttpUtils.getByBrowser(HttpUtils.getURI(Factory.getConfiguration().getRoot_uri() + "/Home/PostLogin", loginPacket));
+        return html.contains("1");
     }
 
     private boolean login(String user, String pwd) {
@@ -74,5 +79,16 @@ public class SchoolHttpService extends BaseHttpService {
             if (notices.isEmpty()) throw new PageEmptyException("Page " + pageNum + " is empty");
         }
         return notices;
+    }
+
+    @Override
+    protected String fetchContent(Notice notice) {
+        String checkHtml = HttpUtils.getByBrowser(HttpUtils.getURI(notice.getUri()));
+        if (!checkHtml.contains(notice.getTitle())) {
+            if (!loginByBrowser(
+                    Factory.getConfiguration().getUser(), Factory.getConfiguration().getPwd()))
+                return null;
+        }
+        return HttpUtils.snapshot(notice.getUri());
     }
 }

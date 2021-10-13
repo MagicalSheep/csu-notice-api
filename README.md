@@ -1,6 +1,6 @@
 # csu-notice-api
 
-![version](https://img.shields.io/badge/version-0.4.0--SNAPSHOT-blue)
+![version](https://img.shields.io/badge/version-0.5.0--SNAPSHOT-blue)
 
 **开发中，响应格式不稳定**
 
@@ -66,6 +66,7 @@
   "pwd": "examplePassword",
   "root_uri": "http://tz.its.csu.edu.cn",
   "cse_uri": "https://cse.csu.edu.cn/index/tzgg.htm",
+  "chrome_path": "exampleChromePath",
   "update_num_per_pages": 5,
   "init_db": false,
   "school": true,
@@ -77,6 +78,7 @@
 - `pwd`: 信息门户密码
 - `root_uri`: 校内通知官网地址
 - `cse_uri`: 计算机学院官网地址
+- `chrome_path`: Chrome浏览器地址（用于截取网页图片）
 - `update_num_per_pages`: 每次更新时，从网站上爬取通知的页数（启动时将进行一次更新）
 - `init_db`: 是否在启动时更新整个数据库（爬取所有通知）
 - `scholl`: 更新时是否爬取校内通知

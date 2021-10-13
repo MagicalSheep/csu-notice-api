@@ -7,6 +7,7 @@ public class Configuration {
 
     private String root_uri;
     private String cse_uri;
+    private String chrome_path;
 
     private int update_num_per_pages;
     private boolean init_db = false;
@@ -19,6 +20,10 @@ public class Configuration {
 
     public boolean isSchool() {
         return school;
+    }
+
+    public String getChrome_path() {
+        return chrome_path;
     }
 
     public int getUpdate_num_per_pages() {
@@ -75,5 +80,9 @@ public class Configuration {
 
     public void setCse_uri(String cse_uri) {
         this.cse_uri = cse_uri;
+    }
+
+    public void setChrome_path(String chrome_path) {
+        this.chrome_path = chrome_path;
     }
 }

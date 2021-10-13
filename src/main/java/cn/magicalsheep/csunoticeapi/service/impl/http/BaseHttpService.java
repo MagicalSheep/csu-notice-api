@@ -4,9 +4,7 @@ import cn.magicalsheep.csunoticeapi.exception.PageEmptyException;
 import cn.magicalsheep.csunoticeapi.model.constant.NoticeType;
 import cn.magicalsheep.csunoticeapi.model.entity.Notice;
 import cn.magicalsheep.csunoticeapi.service.HttpService;
-import cn.magicalsheep.csunoticeapi.service.ImageService;
 import cn.magicalsheep.csunoticeapi.service.StoreService;
-import cn.magicalsheep.csunoticeapi.util.HttpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,12 +15,10 @@ public abstract class BaseHttpService implements HttpService {
     protected final Logger logger = LoggerFactory.getLogger(BaseHttpService.class);
     protected final NoticeType type;
     protected final StoreService storeService;
-    protected final ImageService imageService;
     private int HEAD;
 
-    public BaseHttpService(StoreService storeService, ImageService imageService, NoticeType type) {
+    public BaseHttpService(StoreService storeService, NoticeType type) {
         this.type = type;
-        this.imageService = imageService;
         this.storeService = storeService;
     }
 
@@ -42,20 +38,21 @@ public abstract class BaseHttpService implements HttpService {
             }
         } catch (PageEmptyException ignored) {
         }
-//        int i = 0, count = 0;
-//        logger.info("Updating notice content, please waiting...(Type: " + type + ")");
-//        for (Notice notice : result) {
-//            ++i;
-//            logger.info("Updating notice " + i + " content (Type: " + type + ")");
-//            if (storeService.isNeedToGetContent(type, notice)) {
-//                ++count;
-//                notice.setContent(imageService.toBase64Image(
-//                        HttpUtils.get(HttpUtils.getURI(notice.getUri())).body()));
-//            }
-//        }
-//        logger.info("Updated " + count + " notices content (Type: " + type + ")");
+        int i = 0, count = 0;
+        logger.info("Updating notice content, please waiting...(Type: " + type + ")");
+        for (Notice notice : result) {
+            ++i;
+            logger.info("Updating notice " + i + " content (Type: " + type + ")");
+            if (storeService.isNeedToGetContent(type, notice)) {
+                ++count;
+                notice.setContent(fetchContent(notice));
+            }
+        }
+        logger.info("Updated " + count + " notices content (Type: " + type + ")");
         HEAD = storeService.save(result, type);
     }
 
     protected abstract ArrayList<Notice> getNotices(int pageNum) throws Exception;
+
+    protected abstract String fetchContent(Notice notice);
 }

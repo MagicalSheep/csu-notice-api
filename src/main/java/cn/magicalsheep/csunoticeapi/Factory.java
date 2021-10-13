@@ -2,11 +2,13 @@ package cn.magicalsheep.csunoticeapi;
 
 import cn.magicalsheep.csunoticeapi.model.Configuration;
 import cn.magicalsheep.csunoticeapi.util.IOUtils;
+import org.springframework.stereotype.Component;
 
 import java.net.CookieManager;
 import java.net.http.HttpClient;
 import java.time.Duration;
 
+@Component
 public class Factory {
 
     private static boolean firstRun = false;

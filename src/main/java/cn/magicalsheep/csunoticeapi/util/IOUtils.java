@@ -3,9 +3,11 @@ package cn.magicalsheep.csunoticeapi.util;
 import cn.magicalsheep.csunoticeapi.Factory;
 import cn.magicalsheep.csunoticeapi.model.Configuration;
 import com.google.gson.Gson;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 
+@Component
 public class IOUtils {
 
     private static final File file = new File(System.getProperty("user.dir") + System.getProperty("file.separator") + "settings.json");
@@ -37,6 +39,7 @@ public class IOUtils {
             Configuration configuration = new Configuration();
             configuration.setUser("exampleUser");
             configuration.setPwd("examplePassword");
+            configuration.setChrome_path("exampleChromePath");
             configuration.setRoot_uri("http://tz.its.csu.edu.cn");
             configuration.setCse_uri("https://cse.csu.edu.cn/index/tzgg.htm");
             return configuration;

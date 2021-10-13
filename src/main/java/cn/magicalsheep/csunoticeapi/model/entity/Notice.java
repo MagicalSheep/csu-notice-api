@@ -8,9 +8,15 @@ public class Notice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Lob
     private String title;
+
     private String from;
+
     private String uri;
+
+    @Lob
     private String content;
 
     public Notice() {

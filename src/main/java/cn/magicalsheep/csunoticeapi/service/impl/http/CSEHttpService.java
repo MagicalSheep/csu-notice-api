@@ -6,7 +6,6 @@ import cn.magicalsheep.csunoticeapi.model.Page;
 import cn.magicalsheep.csunoticeapi.model.constant.NoticeType;
 import cn.magicalsheep.csunoticeapi.model.entity.CSENotice;
 import cn.magicalsheep.csunoticeapi.model.entity.Notice;
-import cn.magicalsheep.csunoticeapi.service.ImageService;
 import cn.magicalsheep.csunoticeapi.service.StoreService;
 import cn.magicalsheep.csunoticeapi.util.HttpUtils;
 import org.jsoup.Jsoup;
@@ -20,8 +19,8 @@ import java.util.ArrayList;
 @Service
 public class CSEHttpService extends BaseHttpService {
 
-    public CSEHttpService(ImageService imageService, StoreService storeService) {
-        super(storeService, imageService, NoticeType.CSE);
+    public CSEHttpService(StoreService storeService) {
+        super(storeService, NoticeType.CSE);
     }
 
     private int getPageNum(Page page) {
@@ -67,5 +66,10 @@ public class CSEHttpService extends BaseHttpService {
         if (notices.isEmpty())
             throw new PageEmptyException("Page " + pageNum + " is empty");
         return notices;
+    }
+
+    @Override
+    protected String fetchContent(Notice notice) {
+        return HttpUtils.snapshot(notice.getUri());
     }
 }
