@@ -3,8 +3,6 @@ package cn.magicalsheep.csunoticeapi.util;
 import cn.magicalsheep.csunoticeapi.Factory;
 import cn.magicalsheep.csunoticeapi.model.packet.LoginPacket;
 import cn.magicalsheep.csunoticeapi.model.packet.Packet;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -13,11 +11,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.stereotype.Component;
+import ru.yandex.qatools.ashot.AShot;
+import ru.yandex.qatools.ashot.Screenshot;
+import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Base64;
 
 @Component
 public class HttpUtils implements DisposableBean {
@@ -27,10 +33,13 @@ public class HttpUtils implements DisposableBean {
     private static final ChromeDriverService chromeDriverService;
     private static final ChromeOptions chromeOptions = new ChromeOptions();
     private static final WebDriver driver;
+    private static final AShot ashot;
 
     static {
         chromeOptions.setBinary(Factory.getConfiguration().getChrome_path());
-        chromeOptions.addArguments("--headless");
+        chromeOptions.addArguments("headless");
+        chromeOptions.addArguments("window-size=1920,1080");
+        ashot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(1000));
         chromeDriverService = new ChromeDriverService.Builder()
                 .usingAnyFreePort()
                 .build();
@@ -73,7 +82,39 @@ public class HttpUtils implements DisposableBean {
      */
     public static String snapshot(String uri) {
         driver.get(uri);
-        return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BASE64);
+        Screenshot screenshot = ashot.takeScreenshot(driver);
+        return imgToBase64String(screenshot.getImage());
+    }
+
+    private static String imgToBase64String(BufferedImage image) {
+        String ret;
+        try {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ImageIO.write(image, "png", bos);
+            byte[] imageBytes = bos.toByteArray();
+            Base64.Encoder encoder = Base64.getEncoder();
+            ret = encoder.encodeToString(imageBytes);
+            bos.close();
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+            return null;
+        }
+        return ret;
+    }
+
+    private static BufferedImage base64StringToImg(String imageString) {
+        BufferedImage image = null;
+        byte[] imageByte;
+        try {
+            Base64.Decoder decoder = Base64.getDecoder();
+            imageByte = decoder.decode(imageString);
+            ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
+            image = ImageIO.read(bis);
+            bis.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return image;
     }
 
     /**
