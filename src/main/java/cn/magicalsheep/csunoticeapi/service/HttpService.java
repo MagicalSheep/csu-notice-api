@@ -1,7 +1,7 @@
 package cn.magicalsheep.csunoticeapi.service;
 
 import cn.magicalsheep.csunoticeapi.model.Page;
-import cn.magicalsheep.csunoticeapi.model.entity.Notice;
+import cn.magicalsheep.csunoticeapi.model.pojo.notice.Notice;
 
 import java.util.ArrayList;
 

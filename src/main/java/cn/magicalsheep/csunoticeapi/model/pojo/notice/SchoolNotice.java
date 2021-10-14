@@ -1,4 +1,4 @@
-package cn.magicalsheep.csunoticeapi.model.entity;
+package cn.magicalsheep.csunoticeapi.model.pojo.notice;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;

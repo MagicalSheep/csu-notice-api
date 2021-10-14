@@ -1,11 +1,11 @@
-package cn.magicalsheep.csunoticeapi.repository;
+package cn.magicalsheep.csunoticeapi.repository.notice;
 
-import cn.magicalsheep.csunoticeapi.model.entity.Notice;
+import cn.magicalsheep.csunoticeapi.model.pojo.notice.Notice;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface Repository {
+public interface NoticeRepository {
 
     Optional<Notice> findNoticeById(int id);
 
@@ -16,8 +16,6 @@ public interface Repository {
     Optional<Notice> findFirstByOrderByIdDesc();
 
     Boolean existsByUri(String uri);
-
-    Boolean existsByUriAndContentIsNull(String uri);
 
     List<Notice> findAllByTitleContains(String title);
 

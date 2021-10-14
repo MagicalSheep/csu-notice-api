@@ -1,6 +1,6 @@
 # csu-notice-api
 
-![version](https://img.shields.io/badge/version-0.5.0--SNAPSHOT-blue)
+![version](https://img.shields.io/badge/version-0.6.0--SNAPSHOT-blue)
 
 **开发中，响应格式不稳定**
 
@@ -8,29 +8,26 @@
 
 ## API
 
-### 校内通知
+### 可用接口
 
-- `../main/page`，`POST`，参数: `num`，获取第 `num` 页的所有通知。
-- `../main/head`，`GET`，获取通知列表头指针。
-- `../main`，`POST`，参数: `head`，获取指针`head`与通知列表头指针之间的所有通知。
-- `../main/notice`，`POST`，参数: `id`，获取值为`id`的指针所指向的通知内容。
-- `../main/latest`，`GET`，获取最新的一条通知。
-- `../main/query`，`POST`，参数：`title`，获取标题含有`title`字符串的所有通知。
+- `../{tag}/page`，`GET`，参数: `num`，获取第 `num` 页的所有通知。
+- `../{tag}/head`，`GET`，获取通知列表头指针。
+- `../{tag}`，`GET`，参数: `head`，获取指针`head`与通知列表头指针之间的所有通知。
+- `../{tag}/notice`，`GET`，参数: `id`，获取值为`id`的指针所指向的通知信息。
+- `../{tag}/latest`，`GET`，获取最新的一条通知。
+- `../{tag}/search`，`GET`，参数：`title`，获取标题含有`title`字符串的所有通知。
+- `../{tag}/content`，`GET`，参数：`id`，获取值为`id`的指针所指向的通知内容图片（Base64编码）。
 
-### 计算机院通知
+### 可用标签（tag）
 
-- `../cse/page`，`POST`，参数: `num`，获取第 `num` 页的所有通知。
-- `../cse/head`，`GET`，获取通知列表头指针。
-- `../cse`，`POST`，参数: `head`，获取指针`head`与通知列表头指针之间的所有通知。
-- `../cse/notice`，`POST`，参数: `id`，获取值为`id`的指针所指向的通知内容。
-- `../cse/latest`，`GET`，获取最新的一条通知。
-- `../cse/query`，`POST`，参数：`title`，获取标题含有`title`字符串的所有通知。
+- 校内通知：`main`
+- 计算机院通知：`cse`
 
 ## 响应格式
 
 所有响应均为`json`格式文本，且均含有API版本号`version`、响应状态`status`和响应信息`msg`三个字段。
 
-通知信息的响应格式待稳定，暂定如下：
+### 通知信息
 
 ```json
 {
@@ -38,21 +35,40 @@
   "data": [
     {
       "id": 1,
-      "title": "中南大学关于做好2021年下半年全国大学英语四、六级考试报名工作的通知",
-      "from": "本科生院",
-      "uri": "http://tz.its.csu.edu.cn/Home/Release_TZTG_zd/6B4225064B3448C783EE3F3DA60CF9C0",
-      "content": null
+      "title": "关于认真做好2021年教育事业统计工作的通知",
+      "from": "学校办公室",
+      "uri": "http://tz.its.csu.edu.cn/Home/Release_TZTG_zd/2C6CB96118B04E98AB62C2F9F22904F8",
+      "createTime": "2021-10-14T12:22:37.305+00:00",
+      "updateTime": "2021-10-14T12:22:37.445+00:00"
     },
     {
       "id": 2,
-      "title": "关于2021年中秋节放假安排的通知",
+      "title": "关于着手准备学校第四次党代会报告的通知",
       "from": "学校办公室",
-      "uri": "http://tz.its.csu.edu.cn/Home/Release_TZTG_zd/305E554CBFCE428E8A4355ED0831C5A9",
-      "content": null
+      "uri": "http://tz.its.csu.edu.cn/Home/Release_TZTG_zd/ED71487900F540DF889B7DF89A35EF21",
+      "createTime": "2021-10-14T12:22:37.305+00:00",
+      "updateTime": "2021-10-14T12:22:37.455+00:00"
     }
   ],
   "version": 2,
   "status": 200
+}
+```
+
+### 通知内容
+
+```json
+{
+    "msg": "ok",
+    "data": {
+        "id": 1,
+        "uri": "http://tz.its.csu.edu.cn/Home/Release_TZTG_zd/2C6CB96118B04E98AB62C2F9F22904F8",
+        "content": "Base64 code example",
+        "createTime": "2021-10-14T12:23:36.042+00:00",
+        "updateTime": "2021-10-14T12:23:40.987+00:00"
+    },
+    "version": 2,
+    "status": 200
 }
 ```
 

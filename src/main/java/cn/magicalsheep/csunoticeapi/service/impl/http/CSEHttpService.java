@@ -4,8 +4,10 @@ import cn.magicalsheep.csunoticeapi.Factory;
 import cn.magicalsheep.csunoticeapi.exception.PageEmptyException;
 import cn.magicalsheep.csunoticeapi.model.Page;
 import cn.magicalsheep.csunoticeapi.model.constant.NoticeType;
-import cn.magicalsheep.csunoticeapi.model.entity.CSENotice;
-import cn.magicalsheep.csunoticeapi.model.entity.Notice;
+import cn.magicalsheep.csunoticeapi.model.pojo.content.CSENoticeContent;
+import cn.magicalsheep.csunoticeapi.model.pojo.content.NoticeContent;
+import cn.magicalsheep.csunoticeapi.model.pojo.notice.CSENotice;
+import cn.magicalsheep.csunoticeapi.model.pojo.notice.Notice;
 import cn.magicalsheep.csunoticeapi.service.impl.store.CSEStoreService;
 import cn.magicalsheep.csunoticeapi.util.HttpUtils;
 import org.jsoup.Jsoup;
@@ -15,6 +17,7 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 @Service
 public class CSEHttpService extends BaseHttpService {
@@ -69,7 +72,11 @@ public class CSEHttpService extends BaseHttpService {
     }
 
     @Override
-    protected String fetchContent(Notice notice) {
-        return HttpUtils.snapshot(notice.getUri());
+    protected NoticeContent fetchContent(Notice notice) {
+        NoticeContent content = new CSENoticeContent();
+        content.setUpdateTime(new Date());
+        content.setUri(notice.getUri());
+        content.setContent(HttpUtils.snapshot(notice.getUri()));
+        return content;
     }
 }

@@ -5,8 +5,10 @@ import cn.magicalsheep.csunoticeapi.exception.LoginException;
 import cn.magicalsheep.csunoticeapi.exception.PageEmptyException;
 import cn.magicalsheep.csunoticeapi.model.Page;
 import cn.magicalsheep.csunoticeapi.model.constant.NoticeType;
-import cn.magicalsheep.csunoticeapi.model.entity.Notice;
-import cn.magicalsheep.csunoticeapi.model.entity.SchoolNotice;
+import cn.magicalsheep.csunoticeapi.model.pojo.content.NoticeContent;
+import cn.magicalsheep.csunoticeapi.model.pojo.content.SchoolNoticeContent;
+import cn.magicalsheep.csunoticeapi.model.pojo.notice.Notice;
+import cn.magicalsheep.csunoticeapi.model.pojo.notice.SchoolNotice;
 import cn.magicalsheep.csunoticeapi.model.packet.LoginPacket;
 import cn.magicalsheep.csunoticeapi.service.impl.store.SchoolStoreService;
 import cn.magicalsheep.csunoticeapi.util.HttpUtils;
@@ -17,6 +19,7 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -82,13 +85,17 @@ public class SchoolHttpService extends BaseHttpService {
     }
 
     @Override
-    protected String fetchContent(Notice notice) {
+    protected NoticeContent fetchContent(Notice notice) {
         String checkHtml = HttpUtils.getByBrowser(HttpUtils.getURI(notice.getUri()));
         if (!checkHtml.contains(notice.getTitle())) {
             if (!loginByBrowser(
                     Factory.getConfiguration().getUser(), Factory.getConfiguration().getPwd()))
                 return null;
         }
-        return HttpUtils.snapshot(notice.getUri());
+        NoticeContent content = new SchoolNoticeContent();
+        content.setUpdateTime(new Date());
+        content.setUri(notice.getUri());
+        content.setContent(HttpUtils.snapshot(notice.getUri()));
+        return content;
     }
 }
