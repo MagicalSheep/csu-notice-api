@@ -28,7 +28,14 @@ public class BaseStoreService implements StoreService {
         this.type = type;
     }
 
-    private void save(Notice notice) {
+    public int save(Notice notice) {
+        saveFunc(notice);
+        flush();
+        HEAD = getLatestNotice().getId();
+        return HEAD;
+    }
+
+    private void saveFunc(Notice notice) {
         if (type == NoticeType.SCHOOL)
             ((SchoolNoticeRepository) repository).save((SchoolNotice) notice);
         else
@@ -53,13 +60,11 @@ public class BaseStoreService implements StoreService {
         for (int i = notices.size() - 1; i >= 0; i--) {
             Notice notice = notices.get(i);
             if (!repository.existsByUri(notice.getUri())) {
-                save(notice);
+                saveFunc(notice);
             }
         }
         flush();
         HEAD = getLatestNotice().getId();
-        logger.info("Update notices completed");
-        logger.info("Current " + NoticeType.CSE + " head pointer is " + HEAD);
         return HEAD;
     }
 

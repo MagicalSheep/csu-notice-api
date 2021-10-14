@@ -10,6 +10,8 @@ public interface StoreService {
 
     int save(ArrayList<Notice> notices);
 
+    int save(Notice notice);
+
     Notice getNoticeById(int id);
 
     Notice getLatestNotice();

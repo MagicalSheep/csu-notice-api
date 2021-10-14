@@ -39,7 +39,7 @@ public class HttpUtils implements DisposableBean {
         chromeOptions.setBinary(Factory.getConfiguration().getChrome_path());
         chromeOptions.addArguments("headless");
         chromeOptions.addArguments("window-size=1920,1080");
-        ashot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(1000));
+        ashot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(2000));
         chromeDriverService = new ChromeDriverService.Builder()
                 .usingAnyFreePort()
                 .build();

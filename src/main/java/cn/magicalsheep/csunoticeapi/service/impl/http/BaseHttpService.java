@@ -27,8 +27,7 @@ public abstract class BaseHttpService implements HttpService {
         return HEAD;
     }
 
-    @Override
-    public void update(int updatePageNum) throws Exception {
+    private void updateV1(int updatePageNum) throws Exception {
         logger.info("Start updating notices " + "(Type: " + type + ")");
         ArrayList<Notice> result = new ArrayList<>();
         try {
@@ -38,6 +37,8 @@ public abstract class BaseHttpService implements HttpService {
             }
         } catch (PageEmptyException ignored) {
         }
+        logger.info("Update notices completed");
+        logger.info("Current " + type + " head pointer is " + HEAD);
         int i = 0, count = 0;
         logger.info("Updating notice content, please waiting...(Type: " + type + ")");
         for (Notice notice : result) {
@@ -52,7 +53,31 @@ public abstract class BaseHttpService implements HttpService {
         HEAD = storeService.save(result);
     }
 
+    @Override
+    public void update(int updatePageNum) throws Exception {
+        logger.info("Start updating notices " + "(Type: " + type + ")");
+        for (int i = updatePageNum; i >= 1; i--) {
+            logger.info("Updating page " + (updatePageNum - i + 1) + " (Type: " + type + ")");
+            ArrayList<Notice> res = getNotices(i);
+            HEAD = storeService.save(res);
+            new Thread(() -> handleContent(res)).start();
+        }
+        logger.info("Update notices completed");
+        logger.info("Current " + type + " head pointer is " + HEAD);
+    }
+
     protected abstract ArrayList<Notice> getNotices(int pageNum) throws Exception;
 
     protected abstract String fetchContent(Notice notice);
+
+    private void handleContent(ArrayList<Notice> notices) {
+        for (Notice notice : notices) {
+            if (!storeService.isNeedToGetContent(notice))
+                continue;
+            new Thread(() -> {
+                notice.setContent(fetchContent(notice));
+                HEAD = storeService.save(notice);
+            }).start();
+        }
+    }
 }
