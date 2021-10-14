@@ -1,12 +1,14 @@
 package cn.magicalsheep.csunoticeapi.util;
 
 import cn.magicalsheep.csunoticeapi.Factory;
+import cn.magicalsheep.csunoticeapi.WebDriverFactory;
 import cn.magicalsheep.csunoticeapi.model.packet.LoginPacket;
 import cn.magicalsheep.csunoticeapi.model.packet.Packet;
+import org.apache.commons.pool2.ObjectPool;
+import org.apache.commons.pool2.PooledObjectFactory;
+import org.apache.commons.pool2.impl.GenericObjectPool;
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriverService;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
@@ -23,6 +25,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.util.Base64;
 
 @Component
@@ -30,23 +33,21 @@ public class HttpUtils implements DisposableBean {
 
     private static final Logger logger = LoggerFactory.getLogger(HttpUtils.class);
 
-    private static final ChromeDriverService chromeDriverService;
-    private static final ChromeOptions chromeOptions = new ChromeOptions();
+    private static final PooledObjectFactory<WebDriver> webDriverFactory
+            = new WebDriverFactory();
+    private static final GenericObjectPoolConfig<WebDriver> config
+            = new GenericObjectPoolConfig<>();
+    private static final ObjectPool<WebDriver> pool;
     private static final AShot ashot;
 
     static {
-        chromeOptions.setBinary(Factory.getConfiguration().getChrome_path());
-        chromeOptions.addArguments("headless");
-        chromeOptions.addArguments("window-size=1920,1080");
+        config.setBlockWhenExhausted(true);
+        config.setMaxWait(Duration.ofMillis(-1));
+        config.setMaxTotal(15);
+        config.setMinIdle(3);
+        pool = new GenericObjectPool<>(webDriverFactory, config);
+
         ashot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(1000));
-        chromeDriverService = new ChromeDriverService.Builder()
-                .usingAnyFreePort()
-                .build();
-        try {
-            chromeDriverService.start();
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-        }
     }
 
     public static URI getURI(String uri) {
@@ -72,26 +73,21 @@ public class HttpUtils implements DisposableBean {
         return Factory.getHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
     }
 
-    public static WebDriver createDriver(){
-        return new RemoteWebDriver(chromeDriverService.getUrl(), chromeOptions);
-    }
-
     /**
      * Get snapshot from an uri
      *
-     * @param webDriver webDriver
      * @param uri uri
      * @return Base64 image
      */
-    public static String snapshot(WebDriver webDriver, String uri) {
-        try
-        {
-            webDriver.get(uri);
+    public static String snapshot(String uri) {
+        try {
+            WebDriver driver = pool.borrowObject();
+            driver.get(uri);
             Thread.sleep(2000L);
-            Screenshot screenshot = ashot.takeScreenshot(webDriver);
+            Screenshot screenshot = ashot.takeScreenshot(driver);
+            pool.returnObject(driver);
             return imgToBase64String(screenshot.getImage());
-        } catch (InterruptedException e)
-        {
+        } catch (Exception e) {
             logger.error(e.getMessage());
             return null;
         }
@@ -131,17 +127,24 @@ public class HttpUtils implements DisposableBean {
     /**
      * Using browser to get resources from an uri
      *
-     * @param webDriver webDriver
      * @param uri uri
      * @return html
      */
-    public static String getByBrowser(WebDriver webDriver, URI uri){
-        webDriver.get(uri.toString());
-        return webDriver.getPageSource();
+    public static String getByBrowser(URI uri) {
+        try {
+            WebDriver driver = pool.borrowObject();
+            driver.get(uri.toString());
+            String ret = driver.getPageSource();
+            pool.returnObject(driver);
+            return ret;
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return "";
+        }
     }
 
     @Override
     public void destroy() {
-        chromeDriverService.stop();
+        ((WebDriverFactory) webDriverFactory).destroy();
     }
 }

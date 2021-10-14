@@ -14,7 +14,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.openqa.selenium.WebDriver;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,9 +27,9 @@ public class SchoolHttpService extends BaseHttpService {
         super(schoolStoreService, NoticeType.SCHOOL);
     }
 
-    private boolean loginByBrowser(WebDriver driver, String user, String pwd) {
+    private boolean loginByBrowser(String user, String pwd) {
         LoginPacket loginPacket = new LoginPacket(user, pwd);
-        String html = HttpUtils.getByBrowser(driver, HttpUtils.getURI(Factory.getConfiguration().getRoot_uri() + "/Home/PostLogin", loginPacket));
+        String html = HttpUtils.getByBrowser(HttpUtils.getURI(Factory.getConfiguration().getRoot_uri() + "/Home/PostLogin", loginPacket));
         return html.contains("1");
     }
 
@@ -84,15 +83,12 @@ public class SchoolHttpService extends BaseHttpService {
 
     @Override
     protected String fetchContent(Notice notice) {
-        WebDriver driver = HttpUtils.createDriver();
-        String checkHtml = HttpUtils.getByBrowser(driver, HttpUtils.getURI(notice.getUri()));
+        String checkHtml = HttpUtils.getByBrowser(HttpUtils.getURI(notice.getUri()));
         if (!checkHtml.contains(notice.getTitle())) {
-            if (!loginByBrowser(driver,
+            if (!loginByBrowser(
                     Factory.getConfiguration().getUser(), Factory.getConfiguration().getPwd()))
                 return null;
         }
-        String ret = HttpUtils.snapshot(driver, notice.getUri());
-        driver.quit();
-        return ret;
+        return HttpUtils.snapshot(notice.getUri());
     }
 }
