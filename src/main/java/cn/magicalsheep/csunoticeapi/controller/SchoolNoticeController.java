@@ -1,10 +1,9 @@
 package cn.magicalsheep.csunoticeapi.controller;
 
-import cn.magicalsheep.csunoticeapi.model.constant.NoticeType;
 import cn.magicalsheep.csunoticeapi.model.entity.Notice;
 import cn.magicalsheep.csunoticeapi.model.response.AjaxResult;
-import cn.magicalsheep.csunoticeapi.service.StoreService;
 import cn.magicalsheep.csunoticeapi.service.impl.http.SchoolHttpService;
+import cn.magicalsheep.csunoticeapi.service.impl.store.SchoolStoreService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,14 +17,13 @@ import java.util.ArrayList;
 public class SchoolNoticeController {
 
     private static final Logger logger = LoggerFactory.getLogger(SchoolNoticeController.class);
-    private final StoreService storeService;
+    private final SchoolStoreService storeService;
     private final SchoolHttpService schoolHttpService;
-    private static final NoticeType type = NoticeType.SCHOOL;
 
     @PostMapping("/page")
     public AjaxResult getNotices(@RequestParam int num) {
         try {
-            ArrayList<Notice> res = storeService.getNotices(type, num);
+            ArrayList<Notice> res = storeService.getNotices(num);
             return AjaxResult.success(res);
         } catch (Exception e) {
             logger.info("[Error] " + e.getMessage());
@@ -41,7 +39,7 @@ public class SchoolNoticeController {
     @PostMapping
     public AjaxResult getDeltaNotices(@RequestParam int head) {
         try {
-            ArrayList<Notice> res = storeService.getDeltaNotices(type, head);
+            ArrayList<Notice> res = storeService.getDeltaNotices(head);
             return AjaxResult.success(res);
         } catch (Exception e) {
             logger.info("[Error] " + e.getMessage());
@@ -52,7 +50,7 @@ public class SchoolNoticeController {
     @PostMapping("/notice")
     public AjaxResult getNotice(@RequestParam int id) {
         try {
-            Notice res = storeService.getNoticeById(type, id);
+            Notice res = storeService.getNoticeById(id);
             return AjaxResult.success(res);
         } catch (Exception e) {
             logger.info("[Error] " + e.getMessage());
@@ -63,7 +61,7 @@ public class SchoolNoticeController {
     @GetMapping("/latest")
     public AjaxResult getLatestNotice() {
         try {
-            Notice res = storeService.getLatestNotice(type);
+            Notice res = storeService.getLatestNotice();
             return AjaxResult.success(res);
         } catch (Exception e) {
             logger.info("[Error] " + e.getMessage());
@@ -73,7 +71,7 @@ public class SchoolNoticeController {
 
     @PostMapping("/query")
     public AjaxResult getNoticeByTitle(@RequestParam String title) {
-        return AjaxResult.success(storeService.getNoticeByTitle(type, title));
+        return AjaxResult.success(storeService.getNoticeByTitle(title));
     }
 
 }

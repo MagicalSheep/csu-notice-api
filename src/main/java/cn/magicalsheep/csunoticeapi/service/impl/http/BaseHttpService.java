@@ -43,13 +43,13 @@ public abstract class BaseHttpService implements HttpService {
         for (Notice notice : result) {
             ++i;
             logger.info("Updating notice " + i + " content (Type: " + type + ")");
-            if (storeService.isNeedToGetContent(type, notice)) {
+            if (storeService.isNeedToGetContent(notice)) {
                 ++count;
                 notice.setContent(fetchContent(notice));
             }
         }
         logger.info("Updated " + count + " notices content (Type: " + type + ")");
-        HEAD = storeService.save(result, type);
+        HEAD = storeService.save(result);
     }
 
     protected abstract ArrayList<Notice> getNotices(int pageNum) throws Exception;

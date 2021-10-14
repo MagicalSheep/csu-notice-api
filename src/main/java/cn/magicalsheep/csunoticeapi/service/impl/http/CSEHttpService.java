@@ -7,6 +7,7 @@ import cn.magicalsheep.csunoticeapi.model.constant.NoticeType;
 import cn.magicalsheep.csunoticeapi.model.entity.CSENotice;
 import cn.magicalsheep.csunoticeapi.model.entity.Notice;
 import cn.magicalsheep.csunoticeapi.service.StoreService;
+import cn.magicalsheep.csunoticeapi.service.impl.store.CSEStoreService;
 import cn.magicalsheep.csunoticeapi.util.HttpUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -19,8 +20,8 @@ import java.util.ArrayList;
 @Service
 public class CSEHttpService extends BaseHttpService {
 
-    public CSEHttpService(StoreService storeService) {
-        super(storeService, NoticeType.CSE);
+    public CSEHttpService(CSEStoreService cseStoreService) {
+        super(cseStoreService, NoticeType.CSE);
     }
 
     private int getPageNum(Page page) {

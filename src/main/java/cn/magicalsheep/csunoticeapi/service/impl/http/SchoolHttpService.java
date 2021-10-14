@@ -8,7 +8,7 @@ import cn.magicalsheep.csunoticeapi.model.constant.NoticeType;
 import cn.magicalsheep.csunoticeapi.model.entity.Notice;
 import cn.magicalsheep.csunoticeapi.model.entity.SchoolNotice;
 import cn.magicalsheep.csunoticeapi.model.packet.LoginPacket;
-import cn.magicalsheep.csunoticeapi.service.StoreService;
+import cn.magicalsheep.csunoticeapi.service.impl.store.SchoolStoreService;
 import cn.magicalsheep.csunoticeapi.util.HttpUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -23,8 +23,8 @@ import java.util.regex.Pattern;
 @Service
 public class SchoolHttpService extends BaseHttpService {
 
-    public SchoolHttpService(StoreService storeService) {
-        super(storeService, NoticeType.SCHOOL);
+    public SchoolHttpService(SchoolStoreService schoolStoreService) {
+        super(schoolStoreService, NoticeType.SCHOOL);
     }
 
     private boolean loginByBrowser(String user, String pwd) {

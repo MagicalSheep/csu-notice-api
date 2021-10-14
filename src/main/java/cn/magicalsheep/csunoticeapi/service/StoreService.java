@@ -1,23 +1,22 @@
 package cn.magicalsheep.csunoticeapi.service;
 
-import cn.magicalsheep.csunoticeapi.model.constant.NoticeType;
 import cn.magicalsheep.csunoticeapi.model.entity.Notice;
 
 import java.util.ArrayList;
 
 public interface StoreService {
 
-    boolean isNeedToGetContent(NoticeType type, Notice notice);
+    boolean isNeedToGetContent(Notice notice);
 
-    int save(ArrayList<Notice> notices, NoticeType type);
+    int save(ArrayList<Notice> notices);
 
-    Notice getNoticeById(NoticeType type, int id);
+    Notice getNoticeById(int id);
 
-    Notice getLatestNotice(NoticeType type);
+    Notice getLatestNotice();
 
-    ArrayList<Notice> getNotices(NoticeType type, int pageNum);
+    ArrayList<Notice> getNotices(int pageNum);
 
-    ArrayList<Notice> getDeltaNotices(NoticeType type, int head);
+    ArrayList<Notice> getDeltaNotices(int head);
 
-    ArrayList<Notice> getNoticeByTitle(NoticeType type, String title);
+    ArrayList<Notice> getNoticeByTitle(String title);
 }
