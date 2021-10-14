@@ -32,14 +32,13 @@ public class HttpUtils implements DisposableBean {
 
     private static final ChromeDriverService chromeDriverService;
     private static final ChromeOptions chromeOptions = new ChromeOptions();
-    private static final WebDriver driver;
     private static final AShot ashot;
 
     static {
         chromeOptions.setBinary(Factory.getConfiguration().getChrome_path());
         chromeOptions.addArguments("headless");
         chromeOptions.addArguments("window-size=1920,1080");
-        ashot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(2000));
+        ashot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(1000));
         chromeDriverService = new ChromeDriverService.Builder()
                 .usingAnyFreePort()
                 .build();
@@ -48,7 +47,6 @@ public class HttpUtils implements DisposableBean {
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
-        driver = new RemoteWebDriver(chromeDriverService.getUrl(), chromeOptions);
     }
 
     public static URI getURI(String uri) {
@@ -74,16 +72,29 @@ public class HttpUtils implements DisposableBean {
         return Factory.getHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
     }
 
+    public static WebDriver createDriver(){
+        return new RemoteWebDriver(chromeDriverService.getUrl(), chromeOptions);
+    }
+
     /**
      * Get snapshot from an uri
      *
+     * @param webDriver webDriver
      * @param uri uri
      * @return Base64 image
      */
-    public static String snapshot(String uri) {
-        driver.get(uri);
-        Screenshot screenshot = ashot.takeScreenshot(driver);
-        return imgToBase64String(screenshot.getImage());
+    public static String snapshot(WebDriver webDriver, String uri) {
+        try
+        {
+            webDriver.get(uri);
+            Thread.sleep(2000L);
+            Screenshot screenshot = ashot.takeScreenshot(webDriver);
+            return imgToBase64String(screenshot.getImage());
+        } catch (InterruptedException e)
+        {
+            logger.error(e.getMessage());
+            return null;
+        }
     }
 
     private static String imgToBase64String(BufferedImage image) {
@@ -119,19 +130,18 @@ public class HttpUtils implements DisposableBean {
 
     /**
      * Using browser to get resources from an uri
-     * REMEMBER CLOSE WINDOW AFTER USING
      *
+     * @param webDriver webDriver
      * @param uri uri
      * @return html
      */
-    public static String getByBrowser(URI uri) {
-        driver.get(uri.toString());
-        return driver.getPageSource();
+    public static String getByBrowser(WebDriver webDriver, URI uri){
+        webDriver.get(uri.toString());
+        return webDriver.getPageSource();
     }
 
     @Override
     public void destroy() {
-        driver.quit();
         chromeDriverService.stop();
     }
 }
