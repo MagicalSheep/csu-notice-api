@@ -24,7 +24,8 @@ public class AdminController {
         }
         boolean flag = Factory.getConfiguration().isInit_db();
         int page_num = (flag) ?
-                0x3f3f3f3f : Factory.getConfiguration().getUpdate_num_per_pages();
+                0 : Factory.getConfiguration().getUpdate_num_per_pages();
+        // TODO: Init db function
         if (Factory.getConfiguration().isSchool()) {
             new Thread(() -> {
                 try {

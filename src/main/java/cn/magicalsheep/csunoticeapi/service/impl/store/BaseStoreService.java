@@ -84,7 +84,7 @@ public class BaseStoreService implements StoreService {
     public boolean isNeedToGetContent(Notice notice) {
         if (!noticeRepository.existsByUri(notice.getUri()))
             return true;
-        return !noticeContentRepository.existsByUri(notice.getUri());
+        return !noticeContentRepository.existsByUriAndContentNotNull(notice.getUri());
     }
 
     @Override

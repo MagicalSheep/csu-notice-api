@@ -8,5 +8,5 @@ public interface NoticeContentRepository {
 
     Optional<NoticeContent> findNoticeContentByUri(String uri);
 
-    Boolean existsByUri(String uri);
+    Boolean existsByUriAndContentNotNull(String uri);
 }

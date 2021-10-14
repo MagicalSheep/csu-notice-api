@@ -21,11 +21,12 @@ public class WebDriverFactory extends BasePooledObjectFactory<WebDriver> {
 
     static {
         chromeOptions.setBinary(Factory.getConfiguration().getChrome_path());
-        chromeOptions.addArguments("--user-agent=\"CSU Notice API Bot\"");
+        chromeOptions.addArguments("--no-sandbox");
         chromeOptions.addArguments("--headless");
         chromeOptions.addArguments("--window-size=1920,1080");
         chromeOptions.addArguments("--disable-gpu");
         chromeOptions.addArguments("--start-maximized");
+        chromeOptions.addArguments("--user-agent=\"CSU Notice API Bot\"");
         chromeDriverService = new ChromeDriverService.Builder()
                 .usingAnyFreePort()
                 .build();

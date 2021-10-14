@@ -43,8 +43,8 @@ public class HttpUtils implements DisposableBean {
     static {
         config.setBlockWhenExhausted(true);
         config.setMaxWait(Duration.ofMillis(-1));
-        config.setMaxTotal(15);
-        config.setMinIdle(3);
+        config.setMaxTotal(2);
+        config.setMinIdle(1);
         pool = new GenericObjectPool<>(webDriverFactory, config);
 
         ashot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(1000));
