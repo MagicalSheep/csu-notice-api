@@ -23,13 +23,15 @@ public class AdminController {
             return;
         }
         boolean flag = Factory.getConfiguration().isInit_db();
-        int page_num = (flag) ?
-                0 : Factory.getConfiguration().getUpdate_num_per_pages();
-        // TODO: Init db function
+        int pageNum = Factory.getConfiguration().getUpdate_num_per_pages();
+        // TODO: need to refactor
         if (Factory.getConfiguration().isSchool()) {
             new Thread(() -> {
                 try {
-                    schoolHttpService.update(page_num);
+                    if (flag)
+                        schoolHttpService.updateAll();
+                    else
+                        schoolHttpService.update(pageNum);
                 } catch (Exception e) {
                     logger.error(e.getMessage());
                 }
@@ -38,7 +40,10 @@ public class AdminController {
         if (Factory.getConfiguration().isCse()) {
             new Thread(() -> {
                 try {
-                    cseHttpService.update(page_num);
+                    if (flag)
+                        cseHttpService.updateAll();
+                    else
+                        cseHttpService.update(pageNum);
                 } catch (Exception e) {
                     logger.error(e.getMessage());
                 }

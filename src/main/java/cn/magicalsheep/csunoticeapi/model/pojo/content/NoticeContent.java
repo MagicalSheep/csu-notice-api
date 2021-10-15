@@ -11,7 +11,6 @@ import java.util.Date;
 @Getter
 @Setter
 @AllArgsConstructor
-@Table(indexes = {@Index(columnList = "uri")})
 public class NoticeContent {
 
     @Id

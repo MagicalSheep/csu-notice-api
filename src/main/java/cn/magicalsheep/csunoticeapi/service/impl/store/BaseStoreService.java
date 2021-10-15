@@ -48,7 +48,14 @@ public class BaseStoreService implements StoreService {
 
     @Override
     public void save(NoticeContent noticeContent) {
-        saveFunc(noticeContent);
+        Optional<NoticeContent> res =
+                noticeContentRepository.findNoticeContentByUri(noticeContent.getUri());
+        if (res.isEmpty()) {
+            saveFunc(noticeContent);
+        } else {
+            res.get().setContent(noticeContent.getContent());
+            saveFunc(res.get());
+        }
         flush();
     }
 

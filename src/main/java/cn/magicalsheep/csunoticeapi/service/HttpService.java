@@ -13,4 +13,6 @@ public interface HttpService {
 
     void update(int updatePageNum) throws Exception;
 
+    void updateAll() throws Exception;
+
 }

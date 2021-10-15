@@ -47,6 +47,11 @@ public class SchoolHttpService extends BaseHttpService {
         return true;
     }
 
+    private int getPageNum() {
+        return 562;
+        // TODO: need to parse
+    }
+
     @Override
     public ArrayList<Notice> parse(Page page) throws Exception {
         String html = page.getContent();
@@ -64,6 +69,11 @@ public class SchoolHttpService extends BaseHttpService {
             ret.add(notice);
         }
         return ret;
+    }
+
+    @Override
+    public void updateAll() throws Exception {
+        update(getPageNum());
     }
 
     @Override

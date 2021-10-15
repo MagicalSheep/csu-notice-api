@@ -11,9 +11,6 @@ import java.util.Date;
 @Getter
 @Setter
 @AllArgsConstructor
-@Table(indexes = {
-        @Index(columnList = "title"),
-        @Index(columnList = "uri")})
 public class Notice {
 
     @Id

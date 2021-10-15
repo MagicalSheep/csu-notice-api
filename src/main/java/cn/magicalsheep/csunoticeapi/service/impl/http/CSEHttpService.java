@@ -26,8 +26,9 @@ public class CSEHttpService extends BaseHttpService {
         super(cseStoreService, NoticeType.CSE);
     }
 
-    private int getPageNum(Page page) {
-        Document document = Jsoup.parse(page.getContent());
+    private int getPageNum() throws Exception {
+        String uri = Factory.getConfiguration().getCse_uri();
+        Document document = Jsoup.parse(HttpUtils.get(HttpUtils.getURI(uri)).body());
         Element element = document.select("TD[id=\"fanye235272\"]").get(0);
         String str = element.html();
         String res = str.substring(str.substring(0, str.indexOf("/")).length() + 1);
@@ -56,11 +57,16 @@ public class CSEHttpService extends BaseHttpService {
     }
 
     @Override
+    public void updateAll() throws Exception {
+        update(getPageNum());
+    }
+
+    @Override
     protected ArrayList<Notice> getNotices(int pageNum) throws Exception {
         if (pageNum <= 0) throw new Exception("Invalid page num");
         String uri = Factory.getConfiguration().getCse_uri();
         Page page = new Page(type, HttpUtils.get(HttpUtils.getURI(uri)).body());
-        int totPage = getPageNum(page);
+        int totPage = getPageNum();
         if (pageNum > 1) {
             uri = uri.replace(".htm", "/" + (totPage - pageNum + 1) + ".htm");
             page = new Page(type, HttpUtils.get(HttpUtils.getURI(uri)).body());

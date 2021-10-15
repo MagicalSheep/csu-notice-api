@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public abstract class BaseHttpService implements HttpService {
 
@@ -28,21 +27,6 @@ public abstract class BaseHttpService implements HttpService {
         return HEAD;
     }
 
-//    private void updateV1(int updatePageNum) throws Exception {
-//        logger.info("Start updating notices " + "(Type: " + type + ")");
-//        ArrayList<Notice> result = new ArrayList<>();
-//        try {
-//            for (int pageNum = 1; pageNum <= updatePageNum; pageNum++) {
-//                logger.info("Updating page " + pageNum + " (Type: " + type + ")");
-//                result.addAll(getNotices(pageNum));
-//            }
-//        } catch (PageEmptyException ignored) {
-//        }
-//        logger.info("Update notices completed");
-//        logger.info("Current " + type + " head pointer is " + HEAD);
-//        HEAD = storeService.save(result);
-//    }
-
     @Override
     public void update(int updatePageNum) throws Exception {
         logger.info("Start updating notices " + "(Type: " + type + ")");
@@ -55,6 +39,9 @@ public abstract class BaseHttpService implements HttpService {
         logger.info("Update notices completed");
         logger.info("Current " + type + " head pointer is " + HEAD);
     }
+
+    @Override
+    public abstract void updateAll() throws Exception;
 
     protected abstract ArrayList<Notice> getNotices(int pageNum) throws Exception;
 
