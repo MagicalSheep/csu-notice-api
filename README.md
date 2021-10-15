@@ -1,6 +1,6 @@
 # csu-notice-api
 
-![version](https://img.shields.io/badge/version-0.6.0--SNAPSHOT-blue)
+![version](https://img.shields.io/badge/version-0.6.5--SNAPSHOT-blue)
 
 **开发中，响应格式不稳定**
 
@@ -17,6 +17,7 @@
 - `../{tag}/latest`，`GET`，获取最新的一条通知。
 - `../{tag}/search`，`GET`，参数：`title`，获取标题含有`title`字符串的所有通知。
 - `../{tag}/content`，`GET`，参数：`id`，获取值为`id`的指针所指向的通知内容图片（Base64编码）。
+- `../{tag}/reload`，`GET`，参数：`id`、`token`，强制重新加载值为`id`的指针所指向的通知内容图片，该操作需要校验`token`值，传入值与服务端预存值相同时才可进行加载。
 
 ### 可用标签（tag）
 
@@ -59,16 +60,16 @@
 
 ```json
 {
-    "msg": "ok",
-    "data": {
-        "id": 1,
-        "uri": "http://tz.its.csu.edu.cn/Home/Release_TZTG_zd/2C6CB96118B04E98AB62C2F9F22904F8",
-        "content": "Base64 code example",
-        "createTime": "2021-10-14T12:23:36.042+00:00",
-        "updateTime": "2021-10-14T12:23:40.987+00:00"
-    },
-    "version": 2,
-    "status": 200
+  "msg": "ok",
+  "data": {
+    "id": 1,
+    "uri": "http://tz.its.csu.edu.cn/Home/Release_TZTG_zd/2C6CB96118B04E98AB62C2F9F22904F8",
+    "content": "Base64 code example",
+    "createTime": "2021-10-14T12:23:36.042+00:00",
+    "updateTime": "2021-10-14T12:23:40.987+00:00"
+  },
+  "version": 2,
+  "status": 200
 }
 ```
 

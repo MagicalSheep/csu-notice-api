@@ -6,6 +6,7 @@ import cn.magicalsheep.csunoticeapi.common.model.AjaxResult;
 import cn.magicalsheep.csunoticeapi.common.service.HttpService;
 import cn.magicalsheep.csunoticeapi.common.service.StoreService;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -13,9 +14,12 @@ import java.util.ArrayList;
 
 public class BaseController {
 
-    protected final Logger logger;
-    protected final StoreService storeService;
-    protected final HttpService httpService;
+    private final Logger logger;
+    private final StoreService storeService;
+    private final HttpService httpService;
+
+    @Value("${token}")
+    private String serverToken;
 
     public BaseController(
             Logger logger, StoreService storeService, HttpService httpService) {
@@ -82,5 +86,16 @@ public class BaseController {
         if (res != null)
             res.setId(id);
         return AjaxResult.success(res);
+    }
+
+    @GetMapping("/reload")
+    public AjaxResult reloadContent(@RequestParam int id, @RequestParam String token) {
+        if (!serverToken.equals(token))
+            return AjaxResult.error("Token error");
+        Notice res = storeService.getNoticeById(id);
+        if (res == null)
+            return AjaxResult.error("Invalid notice id");
+        httpService.loadContent(res, true);
+        return AjaxResult.success();
     }
 }
