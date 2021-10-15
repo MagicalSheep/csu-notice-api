@@ -1,5 +1,6 @@
 package cn.magicalsheep.csunoticeapi;
 
+import cn.magicalsheep.csunoticeapi.common.util.Factory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
