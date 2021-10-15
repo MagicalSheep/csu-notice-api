@@ -79,7 +79,8 @@ public class BaseController {
     @GetMapping("/content")
     public AjaxResult getNoticeContentByNoticeId(@RequestParam int id) {
         NoticeContent res = storeService.getNoticeContentByNoticeId(id);
-        res.setId(id);
+        if (res != null)
+            res.setId(id);
         return AjaxResult.success(res);
     }
 }
