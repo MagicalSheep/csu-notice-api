@@ -1,5 +1,6 @@
 package cn.magicalsheep.csunoticeapi.common.util;
 
+import cn.magicalsheep.csunoticeapi.common.model.Configuration;
 import org.apache.commons.pool2.BasePooledObjectFactory;
 import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
@@ -20,7 +21,7 @@ public class WebDriverFactory extends BasePooledObjectFactory<WebDriver> {
     private static final ChromeOptions chromeOptions = new ChromeOptions();
 
     static {
-        chromeOptions.setBinary(Factory.getConfiguration().getChromePath());
+        chromeOptions.setBinary(Configuration.getProperties("chrome_path"));
         chromeOptions.addArguments("--no-sandbox");
         chromeOptions.addArguments("--headless");
         chromeOptions.addArguments("--window-size=1920,1080");

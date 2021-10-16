@@ -1,6 +1,6 @@
 package cn.magicalsheep.csunoticeapi.common.task;
 
-import cn.magicalsheep.csunoticeapi.common.util.Factory;
+import cn.magicalsheep.csunoticeapi.common.model.Configuration;
 import cn.magicalsheep.csunoticeapi.cse.CSEHttpService;
 import cn.magicalsheep.csunoticeapi.school.SchoolHttpService;
 import lombok.AllArgsConstructor;
@@ -19,20 +19,22 @@ public class UpdateTask {
 
     @Scheduled(cron = "0 */10 * * * ?")
     public void update() {
-        int page_num = Factory.getConfiguration().getUpdateNumPerPages();
-        if (Factory.getConfiguration().isSchool()) {
+        if (Configuration.getBooleanProperties("initialization"))
+            return;
+        int pageNum = Configuration.getIntegerProperties("update_pages_num");
+        if (Configuration.getBooleanProperties("update_school_notice")) {
             new Thread(() -> {
                 try {
-                    schoolHttpService.update(page_num);
+                    schoolHttpService.update(pageNum);
                 } catch (Exception e) {
                     logger.error(e.getMessage());
                 }
             }).start();
         }
-        if (Factory.getConfiguration().isCse()) {
+        if (Configuration.getBooleanProperties("update_cse_notice")) {
             new Thread(() -> {
                 try {
-                    cseHttpService.update(page_num);
+                    cseHttpService.update(pageNum);
                 } catch (Exception e) {
                     logger.error(e.getMessage());
                 }

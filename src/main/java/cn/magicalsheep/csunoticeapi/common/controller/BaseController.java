@@ -1,12 +1,12 @@
 package cn.magicalsheep.csunoticeapi.common.controller;
 
+import cn.magicalsheep.csunoticeapi.common.model.Configuration;
 import cn.magicalsheep.csunoticeapi.common.model.pojo.NoticeContent;
 import cn.magicalsheep.csunoticeapi.common.model.pojo.Notice;
 import cn.magicalsheep.csunoticeapi.common.model.AjaxResult;
 import cn.magicalsheep.csunoticeapi.common.service.HttpService;
 import cn.magicalsheep.csunoticeapi.common.service.StoreService;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -17,9 +17,6 @@ public class BaseController {
     private final Logger logger;
     private final StoreService storeService;
     private final HttpService httpService;
-
-    @Value("${token}")
-    private String serverToken;
 
     public BaseController(
             Logger logger, StoreService storeService, HttpService httpService) {
@@ -90,7 +87,7 @@ public class BaseController {
 
     @GetMapping("/reload")
     public AjaxResult reloadContent(@RequestParam int id, @RequestParam String token) {
-        if (!serverToken.equals(token))
+        if (!Configuration.getProperties("token").equals(token))
             return AjaxResult.error("Token error");
         Notice res = storeService.getNoticeById(id);
         if (res == null)

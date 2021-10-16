@@ -1,6 +1,6 @@
 # csu-notice-api
 
-![version](https://img.shields.io/badge/version-0.6.5--SNAPSHOT-blue)
+![version](https://img.shields.io/badge/version-0.7.0--SNAPSHOT-blue)
 
 **开发中，响应格式不稳定**
 
@@ -75,28 +75,33 @@
 
 ## 配置文件
 
-首次运行后将在运行目录下生成`settings.json`，该文件为配置文件。
+首次运行后将在运行目录下生成`settings.properties`，该文件为配置文件。
 
-```json
-{
-  "user": "exampleUser",
-  "pwd": "examplePassword",
-  "root_uri": "http://tz.its.csu.edu.cn",
-  "cse_uri": "https://cse.csu.edu.cn/index/tzgg.htm",
-  "chrome_path": "exampleChromePath",
-  "update_num_per_pages": 5,
-  "init_db": false,
-  "school": true,
-  "cse": false
-}
+```properties
+#CSU Notice API Configuration
+#Created By MagicalSheep
+#Sat Oct 16 22:46:01 CST 2021
+cse_notice_url=https://cse.csu.edu.cn/index/tzgg.htm
+update_cse_notice=false
+school_notice_url=http://tz.its.csu.edu.cn
+password=example password
+max_thread_nums=2
+user_name=8200000000
+chrome_path=C:/Program Files/Google/Chrome/Application/chrome.exe
+initialization=false
+update_school_notice=true
+update_pages_num=5
+token=example token
 ```
 
-- `user`: 信息门户学工号
-- `pwd`: 信息门户密码
-- `root_uri`: 校内通知官网地址
-- `cse_uri`: 计算机学院官网地址
-- `chrome_path`: Chrome浏览器地址（用于截取网页图片）
-- `update_num_per_pages`: 每次更新时，从网站上爬取通知的页数（启动时将进行一次更新）
-- `init_db`: 是否在启动时更新整个数据库（爬取所有通知）
-- `school`: 更新时是否爬取校内通知
-- `cse`: 更新时是否爬取计算机学院通知
+- `cse_notice_url`: 计算机学院通知公告网址
+- `update_cse_notice`: 更新时是否获取计算机学院通知
+- `school_notice_url`: 校内通知网址
+- `password`: 信息门户密码
+- `max_thread_nums`: 获取通知内容时使用的最大线程数
+- `user_name`: 信息门户学工号
+- `chrome_path`: Chrome浏览器路径（用于截取网页图片）
+- `initialization`: 是否在启动时更新整个数据库（获取所有通知）
+- `update_school_notice`: 更新时是否获取校内通知
+- `update_pages_num`: 每次更新时，从网站上获取通知的页数
+- `token`: 服务端预存的`token`值

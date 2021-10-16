@@ -32,6 +32,6 @@ build/
 ### VS Code ###
 .vscode/
 
-settings.json
+settings.properties
 *.pfx
 src/main/resources/application.properties

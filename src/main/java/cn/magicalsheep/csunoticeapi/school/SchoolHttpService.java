@@ -1,6 +1,6 @@
 package cn.magicalsheep.csunoticeapi.school;
 
-import cn.magicalsheep.csunoticeapi.common.util.Factory;
+import cn.magicalsheep.csunoticeapi.common.model.Configuration;
 import cn.magicalsheep.csunoticeapi.common.service.impl.BaseHttpService;
 import cn.magicalsheep.csunoticeapi.common.exception.LoginException;
 import cn.magicalsheep.csunoticeapi.common.exception.PageEmptyException;
@@ -34,14 +34,16 @@ public class SchoolHttpService extends BaseHttpService {
 
     private boolean loginByBrowser(String user, String pwd) {
         LoginPacket loginPacket = new LoginPacket(user, pwd);
-        String html = HttpUtils.getByBrowser(HttpUtils.getURI(Factory.getConfiguration().getRootUri() + "/Home/PostLogin", loginPacket));
+        String html = HttpUtils.getByBrowser(HttpUtils.getURI(
+                Configuration.getProperties("school_notice_url") + "/Home/PostLogin", loginPacket));
         return html.contains("1");
     }
 
     private boolean isLogin(String user, String pwd) {
         LoginPacket loginPacket = new LoginPacket(user, pwd);
         try {
-            if (!HttpUtils.get(HttpUtils.getURI(Factory.getConfiguration().getRootUri() + "/Home/PostLogin", loginPacket)).body().equals("1"))
+            if (!HttpUtils.get(HttpUtils.getURI(
+                    Configuration.getProperties("school_notice_url") + "/Home/PostLogin", loginPacket)).body().equals("1"))
                 return true;
         } catch (Exception e) {
             return true;
@@ -51,10 +53,11 @@ public class SchoolHttpService extends BaseHttpService {
 
     @Override
     protected int getPageNum() throws Exception {
-        if (isLogin(Factory.getConfiguration().getUser(), Factory.getConfiguration().getPwd()))
+        if (isLogin(Configuration.getProperties("user_name"),
+                Configuration.getProperties("password")))
             return 0;
         Document document = Jsoup.parse(HttpUtils.get(
-                HttpUtils.getURI(Factory.getConfiguration().getRootUri())).body());
+                HttpUtils.getURI(Configuration.getProperties("school_notice_url"))).body());
         Element element = document.select("div[id=\"paging1\"]").get(0);
         List<Node> nodes = element.childNodes();
         if (nodes.isEmpty())
@@ -76,7 +79,7 @@ public class SchoolHttpService extends BaseHttpService {
             notice.setTitle(element.attr("title").replaceFirst("(\\[(.*?)])", ""));
             matcher = Pattern.compile("'(.*?)'").matcher(element.attr("onclick"));
             if (!matcher.find()) throw new Exception("URI is empty!");
-            notice.setUri(Factory.getConfiguration().getRootUri() + matcher.group(1));
+            notice.setUri(Configuration.getProperties("school_notice_url") + matcher.group(1));
             ret.add(notice);
         }
         return ret;
@@ -85,13 +88,14 @@ public class SchoolHttpService extends BaseHttpService {
     @Override
     protected ArrayList<Notice> getNotices(int pageNum) throws Exception {
         if (pageNum <= 0) throw new Exception("Invalid page num");
-        String uri = Factory.getConfiguration().getRootUri();
+        String uri = Configuration.getProperties("school_notice_url");
         if (pageNum > 1)
             uri += "/Home/Release_TZTG/" + (pageNum - 1);
         String html = HttpUtils.get(HttpUtils.getURI(uri)).body();
         ArrayList<Notice> notices = parse(html);
         if (notices.isEmpty()) {
-            if (isLogin(Factory.getConfiguration().getUser(), Factory.getConfiguration().getPwd()))
+            if (isLogin(Configuration.getProperties("user_name"),
+                    Configuration.getProperties("password")))
                 throw new LoginException("Login Exception: Internal server error");
             html = HttpUtils.get(HttpUtils.getURI(uri)).body();
             notices = parse(html);
@@ -105,7 +109,8 @@ public class SchoolHttpService extends BaseHttpService {
         String checkHtml = HttpUtils.getByBrowser(HttpUtils.getURI(notice.getUri()));
         if (!checkHtml.contains(notice.getTitle())) {
             if (!loginByBrowser(
-                    Factory.getConfiguration().getUser(), Factory.getConfiguration().getPwd()))
+                    Configuration.getProperties("user_name"),
+                    Configuration.getProperties("password")))
                 return null;
         }
         NoticeContent content = new SchoolNoticeContent();
@@ -115,7 +120,7 @@ public class SchoolHttpService extends BaseHttpService {
     }
 
     @Override
-    protected boolean isNeedToUpdate(){
-        return Factory.getConfiguration().isSchool();
+    protected boolean isNeedToUpdate() {
+        return Configuration.getBooleanProperties("update_school_notice");
     }
 }

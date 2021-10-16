@@ -1,5 +1,6 @@
 package cn.magicalsheep.csunoticeapi.common.service.impl;
 
+import cn.magicalsheep.csunoticeapi.common.model.Configuration;
 import cn.magicalsheep.csunoticeapi.common.model.constant.NoticeType;
 import cn.magicalsheep.csunoticeapi.common.model.pojo.NoticeContent;
 import cn.magicalsheep.csunoticeapi.common.model.pojo.Notice;
@@ -80,11 +81,11 @@ public abstract class BaseHttpService implements HttpService, InitializingBean {
             return;
         new Thread(() -> {
             try {
-                if (Factory.getConfiguration().isInitDb()) {
+                if (Configuration.getBooleanProperties("initialization")) {
                     updateAll();
                     Factory.updateAllCompletedFallback();
                 } else {
-                    update(Factory.getConfiguration().getUpdateNumPerPages());
+                    update(Configuration.getIntegerProperties("update_pages_num"));
                 }
             } catch (Exception e) {
                 logger.error(e.getMessage());

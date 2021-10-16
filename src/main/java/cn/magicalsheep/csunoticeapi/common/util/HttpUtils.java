@@ -1,5 +1,6 @@
 package cn.magicalsheep.csunoticeapi.common.util;
 
+import cn.magicalsheep.csunoticeapi.common.model.Configuration;
 import cn.magicalsheep.csunoticeapi.common.model.packet.LoginPacket;
 import cn.magicalsheep.csunoticeapi.common.model.packet.Packet;
 import org.apache.commons.pool2.ObjectPool;
@@ -41,7 +42,7 @@ public class HttpUtils implements DisposableBean {
     static {
         config.setBlockWhenExhausted(true);
         config.setMaxWait(Duration.ofMillis(-1));
-        config.setMaxTotal(2);
+        config.setMaxTotal(Configuration.getIntegerProperties("max_thread_nums"));
         config.setMinIdle(1);
         pool = new GenericObjectPool<>(webDriverFactory, config);
 

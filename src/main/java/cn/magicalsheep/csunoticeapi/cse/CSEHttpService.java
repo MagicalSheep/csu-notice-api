@@ -1,6 +1,6 @@
 package cn.magicalsheep.csunoticeapi.cse;
 
-import cn.magicalsheep.csunoticeapi.common.util.Factory;
+import cn.magicalsheep.csunoticeapi.common.model.Configuration;
 import cn.magicalsheep.csunoticeapi.common.service.impl.BaseHttpService;
 import cn.magicalsheep.csunoticeapi.common.exception.PageEmptyException;
 import cn.magicalsheep.csunoticeapi.common.model.constant.NoticeType;
@@ -28,7 +28,7 @@ public class CSEHttpService extends BaseHttpService {
 
     @Override
     protected int getPageNum() throws Exception {
-        String uri = Factory.getConfiguration().getCseUri();
+        String uri = Configuration.getProperties("cse_notice_url");
         Document document = Jsoup.parse(HttpUtils.get(HttpUtils.getURI(uri)).body());
         Element element = document.select("TD[id=\"fanye235272\"]").get(0);
         String str = element.html();
@@ -39,7 +39,7 @@ public class CSEHttpService extends BaseHttpService {
 
     @Override
     protected boolean isNeedToUpdate() {
-        return Factory.getConfiguration().isCse();
+        return Configuration.getBooleanProperties("update_cse_notice");
     }
 
     @Override
@@ -64,7 +64,7 @@ public class CSEHttpService extends BaseHttpService {
     @Override
     protected ArrayList<Notice> getNotices(int pageNum) throws Exception {
         if (pageNum <= 0) throw new Exception("Invalid page num");
-        String uri = Factory.getConfiguration().getCseUri();
+        String uri = Configuration.getProperties("cse_notice_url");
         String html = HttpUtils.get(HttpUtils.getURI(uri)).body();
         int totPage = getPageNum();
         if (pageNum > 1) {
