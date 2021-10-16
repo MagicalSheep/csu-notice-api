@@ -1,7 +1,7 @@
 # CSU Notice API
 
 [![License](https://img.shields.io/github/license/MagicalSheep/csu-notice-api)](LICENSE)
-![version](https://img.shields.io/badge/version-0.7.0--SNAPSHOT-blue)
+![version](https://img.shields.io/badge/version-0.7.5--SNAPSHOT-blue)
 
 **开发中，响应格式不稳定**
 
@@ -38,6 +38,7 @@
 
 - 校内通知：`main`
 - 计算机院通知：`cse`
+- 校长信箱：`mail`
 
 ## 响应格式
 
