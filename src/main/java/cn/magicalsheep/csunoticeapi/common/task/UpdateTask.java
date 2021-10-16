@@ -19,7 +19,7 @@ public class UpdateTask {
 
     @Scheduled(cron = "0 */10 * * * ?")
     public void update() {
-        int page_num = Factory.getConfiguration().getUpdate_num_per_pages();
+        int page_num = Factory.getConfiguration().getUpdateNumPerPages();
         if (Factory.getConfiguration().isSchool()) {
             new Thread(() -> {
                 try {

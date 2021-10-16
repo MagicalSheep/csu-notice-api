@@ -5,12 +5,12 @@ public class Configuration {
     private String user;
     private String pwd;
 
-    private String root_uri;
-    private String cse_uri;
-    private String chrome_path;
+    private String rootUri;
+    private String cseUri;
+    private String chromePath;
 
-    private int update_num_per_pages;
-    private boolean init_db = false;
+    private int updateNumPerPages;
+    private boolean initDb = false;
     private boolean school = true;
     private boolean cse = false;
 
@@ -22,16 +22,16 @@ public class Configuration {
         return school;
     }
 
-    public String getChrome_path() {
-        return chrome_path;
+    public String getChromePath() {
+        return chromePath;
     }
 
-    public int getUpdate_num_per_pages() {
-        return update_num_per_pages;
+    public int getUpdateNumPerPages() {
+        return updateNumPerPages;
     }
 
-    public boolean isInit_db() {
-        return init_db;
+    public boolean isInitDb() {
+        return initDb;
     }
 
     public String getUser() {
@@ -42,12 +42,12 @@ public class Configuration {
         return pwd;
     }
 
-    public String getCse_uri() {
-        return cse_uri;
+    public String getCseUri() {
+        return cseUri;
     }
 
-    public String getRoot_uri() {
-        return root_uri;
+    public String getRootUri() {
+        return rootUri;
     }
 
     public void setCse(boolean cse) {
@@ -58,12 +58,12 @@ public class Configuration {
         this.school = school;
     }
 
-    public void setInit_db(boolean init_db) {
-        this.init_db = init_db;
+    public void setInitDb(boolean initDb) {
+        this.initDb = initDb;
     }
 
-    public void setUpdate_num_per_pages(int update_num_per_pages) {
-        this.update_num_per_pages = update_num_per_pages;
+    public void setUpdateNumPerPages(int update_num_per_pages) {
+        this.updateNumPerPages = update_num_per_pages;
     }
 
     public void setUser(String user) {
@@ -74,15 +74,15 @@ public class Configuration {
         this.pwd = pwd;
     }
 
-    public void setRoot_uri(String root_uri) {
-        this.root_uri = root_uri;
+    public void setRootUri(String rootUri) {
+        this.rootUri = rootUri;
     }
 
-    public void setCse_uri(String cse_uri) {
-        this.cse_uri = cse_uri;
+    public void setCseUri(String cseUri) {
+        this.cseUri = cseUri;
     }
 
-    public void setChrome_path(String chrome_path) {
-        this.chrome_path = chrome_path;
+    public void setChromePath(String chromePath) {
+        this.chromePath = chromePath;
     }
 }

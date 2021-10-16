@@ -38,9 +38,9 @@ public class IOUtils {
             Configuration configuration = new Configuration();
             configuration.setUser("exampleUser");
             configuration.setPwd("examplePassword");
-            configuration.setChrome_path("exampleChromePath");
-            configuration.setRoot_uri("http://tz.its.csu.edu.cn");
-            configuration.setCse_uri("https://cse.csu.edu.cn/index/tzgg.htm");
+            configuration.setChromePath("exampleChromePath");
+            configuration.setRootUri("http://tz.its.csu.edu.cn");
+            configuration.setCseUri("https://cse.csu.edu.cn/index/tzgg.htm");
             return configuration;
         } else {
             throw new IOException("Create file failed");

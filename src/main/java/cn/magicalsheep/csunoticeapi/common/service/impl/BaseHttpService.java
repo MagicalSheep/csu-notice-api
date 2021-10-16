@@ -5,12 +5,14 @@ import cn.magicalsheep.csunoticeapi.common.model.pojo.NoticeContent;
 import cn.magicalsheep.csunoticeapi.common.model.pojo.Notice;
 import cn.magicalsheep.csunoticeapi.common.service.HttpService;
 import cn.magicalsheep.csunoticeapi.common.service.StoreService;
+import cn.magicalsheep.csunoticeapi.common.util.Factory;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.InitializingBean;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public abstract class BaseHttpService implements HttpService {
+public abstract class BaseHttpService implements HttpService, InitializingBean {
 
     private final Logger logger;
     private final NoticeType type;
@@ -44,7 +46,9 @@ public abstract class BaseHttpService implements HttpService {
     }
 
     @Override
-    public abstract void updateAll() throws Exception;
+    public void updateAll() throws Exception {
+        update(getPageNum());
+    }
 
     @Override
     public void loadContent(Notice notice) {
@@ -69,6 +73,28 @@ public abstract class BaseHttpService implements HttpService {
         for (Notice notice : notices)
             loadContent(notice);
     }
+
+    @Override
+    public void afterPropertiesSet() {
+        if (!isNeedToUpdate())
+            return;
+        new Thread(() -> {
+            try {
+                if (Factory.getConfiguration().isInitDb()) {
+                    updateAll();
+                    Factory.updateAllCompletedFallback();
+                } else {
+                    update(Factory.getConfiguration().getUpdateNumPerPages());
+                }
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+            }
+        }).start();
+    }
+
+    protected abstract int getPageNum() throws Exception;
+
+    protected abstract boolean isNeedToUpdate();
 
     protected abstract ArrayList<Notice> getNotices(int pageNum) throws Exception;
 

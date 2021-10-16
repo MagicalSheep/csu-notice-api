@@ -20,7 +20,7 @@ public class WebDriverFactory extends BasePooledObjectFactory<WebDriver> {
     private static final ChromeOptions chromeOptions = new ChromeOptions();
 
     static {
-        chromeOptions.setBinary(Factory.getConfiguration().getChrome_path());
+        chromeOptions.setBinary(Factory.getConfiguration().getChromePath());
         chromeOptions.addArguments("--no-sandbox");
         chromeOptions.addArguments("--headless");
         chromeOptions.addArguments("--window-size=1920,1080");

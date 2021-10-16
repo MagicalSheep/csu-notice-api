@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 @Service
 public class CSEHttpService extends BaseHttpService {
@@ -27,8 +26,9 @@ public class CSEHttpService extends BaseHttpService {
         super(cseStoreService, logger, NoticeType.CSE);
     }
 
-    private int getPageNum() throws Exception {
-        String uri = Factory.getConfiguration().getCse_uri();
+    @Override
+    protected int getPageNum() throws Exception {
+        String uri = Factory.getConfiguration().getCseUri();
         Document document = Jsoup.parse(HttpUtils.get(HttpUtils.getURI(uri)).body());
         Element element = document.select("TD[id=\"fanye235272\"]").get(0);
         String str = element.html();
@@ -38,7 +38,12 @@ public class CSEHttpService extends BaseHttpService {
     }
 
     @Override
-    public ArrayList<Notice> parse(String html) {
+    protected boolean isNeedToUpdate() {
+        return Factory.getConfiguration().isCse();
+    }
+
+    @Override
+    protected ArrayList<Notice> parse(String html) {
         ArrayList<Notice> ret = new ArrayList<>();
         Document document = Jsoup.parse(html);
         Elements elements = document.select("a[href^=../info], a[href^=../../info]");
@@ -57,14 +62,9 @@ public class CSEHttpService extends BaseHttpService {
     }
 
     @Override
-    public void updateAll() throws Exception {
-        update(getPageNum());
-    }
-
-    @Override
     protected ArrayList<Notice> getNotices(int pageNum) throws Exception {
         if (pageNum <= 0) throw new Exception("Invalid page num");
-        String uri = Factory.getConfiguration().getCse_uri();
+        String uri = Factory.getConfiguration().getCseUri();
         String html = HttpUtils.get(HttpUtils.getURI(uri)).body();
         int totPage = getPageNum();
         if (pageNum > 1) {
@@ -80,9 +80,9 @@ public class CSEHttpService extends BaseHttpService {
     @Override
     protected NoticeContent fetchContent(Notice notice) {
         NoticeContent content = new CSENoticeContent();
-        content.setUpdateTime(new Date());
         content.setUri(notice.getUri());
         content.setContent(HttpUtils.snapshot(notice.getUri()));
         return content;
     }
+
 }
