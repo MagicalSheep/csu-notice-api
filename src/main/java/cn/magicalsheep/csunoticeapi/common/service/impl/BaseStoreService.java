@@ -3,6 +3,10 @@ package cn.magicalsheep.csunoticeapi.common.service.impl;
 import cn.magicalsheep.csunoticeapi.common.model.constant.NoticeType;
 import cn.magicalsheep.csunoticeapi.cse.CSENoticeContent;
 import cn.magicalsheep.csunoticeapi.common.model.pojo.NoticeContent;
+import cn.magicalsheep.csunoticeapi.mail.MailNotice;
+import cn.magicalsheep.csunoticeapi.mail.MailNoticeContent;
+import cn.magicalsheep.csunoticeapi.mail.MailNoticeContentRepository;
+import cn.magicalsheep.csunoticeapi.mail.MailNoticeRepository;
 import cn.magicalsheep.csunoticeapi.school.SchoolNoticeContent;
 import cn.magicalsheep.csunoticeapi.cse.CSENotice;
 import cn.magicalsheep.csunoticeapi.common.model.pojo.Notice;
@@ -64,26 +68,34 @@ public class BaseStoreService implements StoreService {
         if (type == NoticeType.SCHOOL)
             ((SchoolNoticeContentRepository) noticeContentRepository)
                     .save((SchoolNoticeContent) noticeContent);
-        else
+        else if (type == NoticeType.CSE)
             ((CseNoticeContentRepository) noticeContentRepository)
                     .save((CSENoticeContent) noticeContent);
+        else
+            ((MailNoticeContentRepository) noticeContentRepository)
+                    .save((MailNoticeContent) noticeContent);
     }
 
     private void saveFunc(Notice notice) {
         notice.setUpdateTime(new Date());
         if (type == NoticeType.SCHOOL)
             ((SchoolNoticeRepository) noticeRepository).save((SchoolNotice) notice);
-        else
+        else if (type == NoticeType.CSE)
             ((CseNoticeRepository) noticeRepository).save((CSENotice) notice);
+        else
+            ((MailNoticeRepository) noticeRepository).save((MailNotice) notice);
     }
 
     private void flush() {
         if (type == NoticeType.SCHOOL) {
             ((SchoolNoticeRepository) noticeRepository).flush();
             ((SchoolNoticeContentRepository) noticeContentRepository).flush();
-        } else {
+        } else if (type == NoticeType.CSE) {
             ((CseNoticeRepository) noticeRepository).flush();
             ((CseNoticeContentRepository) noticeContentRepository).flush();
+        } else {
+            ((MailNoticeRepository) noticeRepository).flush();
+            ((MailNoticeContentRepository) noticeContentRepository).flush();
         }
     }
 

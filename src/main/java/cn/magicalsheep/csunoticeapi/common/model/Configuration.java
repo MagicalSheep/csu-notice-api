@@ -24,6 +24,7 @@ public class Configuration extends Properties {
         config.setProperty("password", "example password");
         config.setProperty("school_notice_url", "http://tz.its.csu.edu.cn");
         config.setProperty("cse_notice_url", "https://cse.csu.edu.cn/index/tzgg.htm");
+        config.setProperty("headmaster_mail_url", "http://oa.its.csu.edu.cn/webserver/mailbox/MailList_Pub.aspx");
         String os = System.getProperty("os.name");
         if (os.startsWith("Windows"))
             config.setProperty("chrome_path", "C:/Program Files/Google/Chrome/Application/chrome.exe");
@@ -36,6 +37,7 @@ public class Configuration extends Properties {
         config.setProperty("initialization", "false");
         config.setProperty("update_school_notice", "true");
         config.setProperty("update_cse_notice", "false");
+        config.setProperty("update_headmaster_mail", "false");
         config.setProperty("token", "example token");
     }
 
