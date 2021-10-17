@@ -25,13 +25,6 @@ public class Configuration extends Properties {
         config.setProperty("school_notice_url", "http://tz.its.csu.edu.cn");
         config.setProperty("cse_notice_url", "https://cse.csu.edu.cn/index/tzgg.htm");
         config.setProperty("headmaster_mail_url", "http://oa.its.csu.edu.cn/webserver/mailbox/MailList_Pub.aspx");
-        String os = System.getProperty("os.name");
-        if (os.startsWith("Windows"))
-            config.setProperty("chrome_path", "C:/Program Files/Google/Chrome/Application/chrome.exe");
-        else if (os.startsWith("Linux"))
-            config.setProperty("chrome_path", "/usr/bin/google-chrome");
-        else if (os.startsWith("Mac"))
-            config.setProperty("chrome_path", "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome");
         config.setProperty("max_thread_nums", "2");
         config.setProperty("update_pages_num", "5");
         config.setProperty("initialization", "false");

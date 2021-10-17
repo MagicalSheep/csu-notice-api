@@ -1,7 +1,7 @@
 # CSU Notice API
 
 [![License](https://img.shields.io/github/license/MagicalSheep/csu-notice-api)](LICENSE)
-![version](https://img.shields.io/badge/version-0.7.5--SNAPSHOT-blue)
+![version](https://img.shields.io/badge/version-0.8.0--SNAPSHOT-blue)
 
 **开发中，响应格式不稳定**
 
@@ -13,13 +13,8 @@
 
 1. 填写`application.properties`文件中的数据库源及账号密码。
 2. 运行服务端程序，生成`settings.properties`配置文件。
-3. 安装[Chrome浏览器](https://www.google.cn/chrome/index.html "Chrome浏览器")，将其可执行程序路径填入`settings.properties`配置文件中。
-4. 安装[Chrome Driver](https://chromedriver.chromium.org/downloads "Chrome Driver")
-   - 对于Linux用户，请确保`Chrome Driver`可执行程序位于或链接至`/usr/bin/`目录下（或手动配置环境变量）。
-   - 对于Windows用户，建议使用包管理工具[Chocolatey](https://community.chocolatey.org/ "Chocolatey")安装`Chrome Driver`，以自动配置环境变量。你也可以手动配置`Chrome Driver`可执行程序的路径于系统环境变量中。
-   - 高于`89.0`版本的`Chrome浏览器`在Linux下工作不正常，请安装使用[Chromium 89.0.4389.90 版本](https://chromium.cypress.io/linux/stable/89.0.4389.90) 的`Chrome浏览器`及`Chrome Driver`程序。
-5. 根据服务器的硬件配置，在`settings.properties`文件中填写合适的线程并发数。
-6. 运行服务端程序
+3. 根据服务器的硬件配置，在`settings.properties`文件中填写合适的线程并发数。
+4. 运行服务端程序
 
 ## API
 

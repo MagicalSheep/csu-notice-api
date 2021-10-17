@@ -3,18 +3,16 @@ package cn.magicalsheep.csunoticeapi.common.util;
 import cn.magicalsheep.csunoticeapi.common.model.Configuration;
 import cn.magicalsheep.csunoticeapi.common.model.packet.LoginPacket;
 import cn.magicalsheep.csunoticeapi.common.model.packet.Packet;
+import com.microsoft.playwright.BrowserContext;
+import com.microsoft.playwright.Page;
 import org.apache.commons.pool2.ObjectPool;
 import org.apache.commons.pool2.PooledObjectFactory;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.stereotype.Component;
-import ru.yandex.qatools.ashot.AShot;
-import ru.yandex.qatools.ashot.Screenshot;
-import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -32,21 +30,21 @@ public class HttpUtils implements DisposableBean {
 
     private static final Logger logger = LoggerFactory.getLogger(HttpUtils.class);
 
-    private static final PooledObjectFactory<WebDriver> webDriverFactory
-            = new WebDriverFactory();
-    private static final GenericObjectPoolConfig<WebDriver> config
+    private static final PooledObjectFactory<BrowserContext> browserContextPooledObjectFactory
+            = new BrowserContextFactory();
+    private static final GenericObjectPoolConfig<BrowserContext> config
             = new GenericObjectPoolConfig<>();
-    private static final ObjectPool<WebDriver> pool;
-    private static final AShot ashot;
+    private static final ObjectPool<BrowserContext> pool;
+    private static final Page.ScreenshotOptions screenshotOptions
+            = new Page.ScreenshotOptions();
 
     static {
         config.setBlockWhenExhausted(true);
         config.setMaxWait(Duration.ofMillis(-1));
         config.setMaxTotal(Configuration.getIntegerProperties("max_thread_nums"));
         config.setMinIdle(1);
-        pool = new GenericObjectPool<>(webDriverFactory, config);
-
-        ashot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(1000));
+        pool = new GenericObjectPool<>(browserContextPooledObjectFactory, config);
+        screenshotOptions.setFullPage(true);
     }
 
     public static URI getURI(String uri) {
@@ -79,13 +77,15 @@ public class HttpUtils implements DisposableBean {
      * @return Base64 image
      */
     public static String snapshot(String uri) {
+
         try {
-            WebDriver driver = pool.borrowObject();
-            driver.get(uri);
-            Thread.sleep(2000L);
-            Screenshot screenshot = ashot.takeScreenshot(driver);
-            pool.returnObject(driver);
-            return imgToBase64String(screenshot.getImage());
+            BrowserContext context = pool.borrowObject();
+            Page page = context.newPage();
+            page.navigate(uri);
+            byte[] screenshot = page.screenshot(screenshotOptions);
+            pool.returnObject(context);
+            ByteArrayInputStream in = new ByteArrayInputStream(screenshot);
+            return imgToBase64String(ImageIO.read(in));
         } catch (Exception e) {
             logger.error(e.getMessage());
             return null;
@@ -131,10 +131,11 @@ public class HttpUtils implements DisposableBean {
      */
     public static String getByBrowser(URI uri) {
         try {
-            WebDriver driver = pool.borrowObject();
-            driver.get(uri.toString());
-            String ret = driver.getPageSource();
-            pool.returnObject(driver);
+            BrowserContext context = pool.borrowObject();
+            Page page = context.newPage();
+            page.navigate(uri.toString());
+            String ret = page.content();
+            pool.returnObject(context);
             return ret;
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -144,6 +145,6 @@ public class HttpUtils implements DisposableBean {
 
     @Override
     public void destroy() {
-        ((WebDriverFactory) webDriverFactory).destroy();
+        ((BrowserContextFactory) browserContextPooledObjectFactory).destroy();
     }
 }
