@@ -8,7 +8,7 @@ import cn.magicalsheep.csunoticeapi.common.service.HttpService;
 import cn.magicalsheep.csunoticeapi.common.service.StoreService;
 import org.slf4j.Logger;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 
@@ -25,8 +25,8 @@ public class BaseController {
         this.httpService = httpService;
     }
 
-    @GetMapping("/page")
-    public AjaxResult getNotices(@RequestParam int num) {
+    @GetMapping("/page/{num}")
+    public AjaxResult getNotices(@PathVariable("num") int num) {
         try {
             ArrayList<Notice> res = storeService.getNotices(num);
             return AjaxResult.success(res);
@@ -41,8 +41,8 @@ public class BaseController {
         return AjaxResult.success(httpService.getHEAD());
     }
 
-    @GetMapping
-    public AjaxResult getDeltaNotices(@RequestParam int head) {
+    @GetMapping("/fetch/{head}")
+    public AjaxResult getDeltaNotices(@PathVariable("head") int head) {
         try {
             ArrayList<Notice> res = storeService.getDeltaNotices(head);
             return AjaxResult.success(res);
@@ -52,8 +52,8 @@ public class BaseController {
         }
     }
 
-    @GetMapping("/notice")
-    public AjaxResult getNotice(@RequestParam int id) {
+    @GetMapping("/notice/{id}")
+    public AjaxResult getNotice(@PathVariable("id") int id) {
         try {
             return AjaxResult.success(storeService.getNoticeById(id));
         } catch (Exception e) {
@@ -72,21 +72,21 @@ public class BaseController {
         }
     }
 
-    @GetMapping("/search")
-    public AjaxResult getNoticeByTitle(@RequestParam String title) {
+    @GetMapping("/search/{title}")
+    public AjaxResult getNoticeByTitle(@PathVariable("title") String title) {
         return AjaxResult.success(storeService.getNoticeByTitle(title));
     }
 
-    @GetMapping("/content")
-    public AjaxResult getNoticeContentByNoticeId(@RequestParam int id) {
+    @GetMapping("/content/{id}")
+    public AjaxResult getNoticeContentByNoticeId(@PathVariable("id") int id) {
         NoticeContent res = storeService.getNoticeContentByNoticeId(id);
         if (res != null)
             res.setId(id);
         return AjaxResult.success(res);
     }
 
-    @GetMapping("/reload")
-    public AjaxResult reloadContent(@RequestParam int id, @RequestParam String token) {
+    @GetMapping("/reload/{token}/{id}")
+    public AjaxResult reloadContent(@PathVariable("id") int id, @PathVariable("token") String token) {
         if (!Configuration.getProperties("token").equals(token))
             return AjaxResult.error("Token error");
         Notice res = storeService.getNoticeById(id);

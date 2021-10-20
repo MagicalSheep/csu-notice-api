@@ -20,14 +20,14 @@
 
 ### 可用接口
 
-- `../{tag}/page`，`GET`，参数: `num`，获取第 `num` 页的所有通知。
+- `../{tag}/page/{num}`，`GET`，获取第 `num` 页的所有通知。
 - `../{tag}/head`，`GET`，获取通知列表头指针。
-- `../{tag}`，`GET`，参数: `head`，获取指针`head`与通知列表头指针之间的所有通知。
-- `../{tag}/notice`，`GET`，参数: `id`，获取值为`id`的指针所指向的通知信息。
+- `../{tag}/fetch/{head}`，`GET`，获取指针`head`与通知列表头指针之间的所有通知。
+- `../{tag}/notice/{id}`，`GET`，获取值为`id`的指针所指向的通知信息。
 - `../{tag}/latest`，`GET`，获取最新的一条通知。
-- `../{tag}/search`，`GET`，参数：`title`，获取标题含有`title`字符串的所有通知。
-- `../{tag}/content`，`GET`，参数：`id`，获取值为`id`的指针所指向的通知内容图片（Base64编码）。
-- `../{tag}/reload`，`GET`，参数：`id`、`token`，强制重新加载值为`id`的指针所指向的通知内容图片，该操作需要校验`token`值，传入值与服务端预存值相同时才可进行加载。
+- `../{tag}/search/{title}`，`GET`，获取标题含有`title`字符串的所有通知。
+- `../{tag}/content/{id}`，`GET`，获取值为`id`的指针所指向的通知内容图片（Base64编码）。
+- `../{tag}/reload/{token}/{id}`，`GET`，强制重新加载值为`id`的指针所指向的通知内容图片，该操作需要校验`token`值，传入值与服务端预存值相同时才可进行加载。
 
 ### 可用标签（tag）
 
