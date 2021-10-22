@@ -1,7 +1,7 @@
 # CSU Notice API
 
 [![License](https://img.shields.io/github/license/MagicalSheep/csu-notice-api)](LICENSE)
-![version](https://img.shields.io/badge/version-0.8.0--SNAPSHOT-blue)
+![version](https://img.shields.io/badge/version-0.8.1--SNAPSHOT-blue)
 
 **开发中，响应格式不稳定**
 
@@ -32,8 +32,9 @@
 ### 可用标签（tag）
 
 - 校内通知：`main`
-- 计算机院通知：`cse`
+- 计算机学院：`cse`
 - 校长信箱：`mail`
+- 学工网：`xgw`
 
 ## 响应格式
 
@@ -98,11 +99,14 @@ school_notice_url=http://tz.its.csu.edu.cn
 password=example password
 max_thread_nums=2
 user_name=8200000000
-chrome_path=C:/Program Files/Google/Chrome/Application/chrome.exe
 initialization=false
 update_school_notice=true
 update_pages_num=5
 token=example token
+headmaster_mail_url=http\://oa.its.csu.edu.cn/webserver/mailbox/MailList_Pub.aspx
+update_headmaster_mail=false
+xgw_notice_url=https://xgw.csu.edu.cn/tzgg.htm
+update_xgw_notice=false
 ```
 
 - `cse_notice_url`: 计算机学院通知公告网址
@@ -111,8 +115,11 @@ token=example token
 - `password`: 信息门户密码
 - `max_thread_nums`: 获取通知内容时使用的最大线程数
 - `user_name`: 信息门户学工号
-- `chrome_path`: Chrome浏览器路径（用于截取网页图片）
 - `initialization`: 是否在启动时更新整个数据库（获取所有通知）
 - `update_school_notice`: 更新时是否获取校内通知
 - `update_pages_num`: 每次更新时，从网站上获取通知的页数
 - `token`: 服务端预存的`token`值
+- `headmaster_mail_url`: 校长信箱网址
+- `update_headmaster_mail`: 更新时是否获取校长信箱信息
+- `xgw_notice_url`: 学工网网址
+- `update_xgw_notice`: 更新时是否获取学工网通知
