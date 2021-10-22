@@ -53,7 +53,7 @@ public class CSEHttpService extends BaseHttpService {
             notice.setFrom("计算机学院");
             String url = x.attr("href");
             String baseUrl = Configuration.getProperties("cse_notice_url");
-            baseUrl = baseUrl.replaceAll("/tzgg.htm", "");
+            baseUrl = baseUrl.replaceAll("/index/tzgg.htm", "");
             if (url.startsWith("../info"))
                 notice.setUri(url.replace("..", baseUrl));
             else
