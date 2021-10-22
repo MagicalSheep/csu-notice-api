@@ -26,6 +26,8 @@ public class Factory {
                     ++updateNum;
                 if (Configuration.getBooleanProperties("update_headmaster_mail"))
                     ++updateNum;
+                if (Configuration.getBooleanProperties("update_xgw_notice"))
+                    ++updateNum;
             }
             httpClient = HttpClient.newBuilder()
                     .version(HttpClient.Version.HTTP_2)
