@@ -52,10 +52,12 @@ public class CSEHttpService extends BaseHttpService {
             notice.setTitle(x.html());
             notice.setFrom("计算机学院");
             String url = x.attr("href");
+            String baseUrl = Configuration.getProperties("cse_notice_url");
+            baseUrl = baseUrl.replaceAll("/tzgg.htm", "");
             if (url.startsWith("../info"))
-                notice.setUri(url.replace("..", "https://cse.csu.edu.cn"));
+                notice.setUri(url.replace("..", baseUrl));
             else
-                notice.setUri(url.replace("../..", "https://cse.csu.edu.cn"));
+                notice.setUri(url.replace("../..", baseUrl));
             ret.add(notice);
         }
         return ret;

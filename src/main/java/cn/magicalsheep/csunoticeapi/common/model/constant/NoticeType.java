@@ -1,5 +1,5 @@
 package cn.magicalsheep.csunoticeapi.common.model.constant;
 
 public enum NoticeType {
-    SCHOOL, CSE, MAIL
+    SCHOOL, CSE, MAIL, XGW
 }

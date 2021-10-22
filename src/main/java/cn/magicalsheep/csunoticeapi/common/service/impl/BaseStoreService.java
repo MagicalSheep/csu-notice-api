@@ -18,6 +18,10 @@ import cn.magicalsheep.csunoticeapi.cse.CseNoticeRepository;
 import cn.magicalsheep.csunoticeapi.common.repository.NoticeRepository;
 import cn.magicalsheep.csunoticeapi.school.SchoolNoticeRepository;
 import cn.magicalsheep.csunoticeapi.common.service.StoreService;
+import cn.magicalsheep.csunoticeapi.xgw.XgwNotice;
+import cn.magicalsheep.csunoticeapi.xgw.XgwNoticeContent;
+import cn.magicalsheep.csunoticeapi.xgw.XgwNoticeContentRepository;
+import cn.magicalsheep.csunoticeapi.xgw.XgwNoticeRepository;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
@@ -71,9 +75,12 @@ public class BaseStoreService implements StoreService {
         else if (type == NoticeType.CSE)
             ((CseNoticeContentRepository) noticeContentRepository)
                     .save((CSENoticeContent) noticeContent);
-        else
+        else if (type == NoticeType.MAIL)
             ((MailNoticeContentRepository) noticeContentRepository)
                     .save((MailNoticeContent) noticeContent);
+        else
+            ((XgwNoticeContentRepository) noticeContentRepository)
+                    .save((XgwNoticeContent) noticeContent);
     }
 
     private void saveFunc(Notice notice) {
@@ -82,8 +89,10 @@ public class BaseStoreService implements StoreService {
             ((SchoolNoticeRepository) noticeRepository).save((SchoolNotice) notice);
         else if (type == NoticeType.CSE)
             ((CseNoticeRepository) noticeRepository).save((CSENotice) notice);
-        else
+        else if (type == NoticeType.MAIL)
             ((MailNoticeRepository) noticeRepository).save((MailNotice) notice);
+        else
+            ((XgwNoticeRepository) noticeRepository).save((XgwNotice) notice);
     }
 
     private void flush() {
@@ -93,9 +102,12 @@ public class BaseStoreService implements StoreService {
         } else if (type == NoticeType.CSE) {
             ((CseNoticeRepository) noticeRepository).flush();
             ((CseNoticeContentRepository) noticeContentRepository).flush();
-        } else {
+        } else if (type == NoticeType.MAIL) {
             ((MailNoticeRepository) noticeRepository).flush();
             ((MailNoticeContentRepository) noticeContentRepository).flush();
+        } else {
+            ((XgwNoticeRepository) noticeRepository).flush();
+            ((XgwNoticeContentRepository) noticeContentRepository).flush();
         }
     }
 

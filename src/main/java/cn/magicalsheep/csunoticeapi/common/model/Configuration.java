@@ -25,12 +25,14 @@ public class Configuration extends Properties {
         config.setProperty("school_notice_url", "http://tz.its.csu.edu.cn");
         config.setProperty("cse_notice_url", "https://cse.csu.edu.cn/index/tzgg.htm");
         config.setProperty("headmaster_mail_url", "http://oa.its.csu.edu.cn/webserver/mailbox/MailList_Pub.aspx");
+        config.setProperty("xgw_notice_url", "https://xgw.csu.edu.cn/tzgg.htm");
         config.setProperty("max_thread_nums", "2");
         config.setProperty("update_pages_num", "5");
         config.setProperty("initialization", "false");
         config.setProperty("update_school_notice", "true");
         config.setProperty("update_cse_notice", "false");
         config.setProperty("update_headmaster_mail", "false");
+        config.setProperty("update_xgw_notice", "false");
         config.setProperty("token", "example token");
     }
 
@@ -109,6 +111,12 @@ public class Configuration extends Properties {
         value = configuration.getProperty("cse_notice_url");
         if (!value.startsWith("http"))
             throw new Exception("Setting field cse_notice_url is not a valid value");
+        value = configuration.getProperty("headmaster_mail_url");
+        if (!value.startsWith("http"))
+            throw new Exception("Setting field headmaster_mail_url is not a valid value");
+        value = configuration.getProperty("xgw_notice_url");
+        if (!value.startsWith("http"))
+            throw new Exception("Setting field xgw_notice_url is not a valid value");
     }
 
     private static boolean isNotInteger(String str) {
