@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/github/license/MagicalSheep/csu-notice-api)](LICENSE)
 ![version](https://img.shields.io/badge/version-0.8.1--SNAPSHOT-blue)
 
-**开发中，响应格式不稳定**
+**已停止开发，实现不优雅且具有严重性能问题，仅供学习参考**
 
 解析学院及校内通知的原始HTML文本，将其封装成为API，供外部应用调用。此仓库不提供在线服务，启用API以获取校内通知需自行部署程序，并配置个人信息门户账号。
 
